@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 마스터클래스 참고 자료</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+:root {
+  --bg: #f7f7f5; --surface: #ffffff; --surface-2: #f1f1ee; --line: #e4e4df;
+  --text: #1d1d1b; --text-2: #55554f; --text-3: #8a8a83;
+  --accent: #d9612b; --accent-soft: #fbece4; --accent-text: #a8461a;
+  --tip: #2f6fdb; --tip-soft: #e9f0fc; --key: #1f8a5b; --key-soft: #e6f4ed; --warn: #b7791f; --warn-soft: #fbf3e2;
+  --code-bg: #f4f3ef; --prompt-bg: #1f2230; --prompt-text: #e9eaf2; --prompt-head: #2b2f40;
+  --radius: 12px; --sidebar: 280px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151514; --surface: #1d1d1b; --surface-2: #252523; --line: #33332f;
+    --text: #ededea; --text-2: #b4b4ad; --text-3: #83837c;
+    --accent: #f0814c; --accent-soft: #3a261c; --accent-text: #f7a57c;
+    --tip: #7aa7f5; --tip-soft: #1c2638; --key: #5cc996; --key-soft: #17291f; --warn: #e2b45c; --warn-soft: #2e2615;
+    --code-bg: #232321; --prompt-bg: #10121a; --prompt-text: #e3e5ef; --prompt-head: #1b1e2a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151514; --surface: #1d1d1b; --surface-2: #252523; --line: #33332f;
+  --text: #ededea; --text-2: #b4b4ad; --text-3: #83837c;
+  --accent: #f0814c; --accent-soft: #3a261c; --accent-text: #f7a57c;
+  --tip: #7aa7f5; --tip-soft: #1c2638; --key: #5cc996; --key-soft: #17291f; --warn: #e2b45c; --warn-soft: #2e2615;
+  --code-bg: #232321; --prompt-bg: #10121a; --prompt-text: #e3e5ef; --prompt-head: #1b1e2a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, "Segoe UI", "Malgun Gothic", sans-serif;
+  font-size: 16px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
+a { color: var(--accent-text); }
+code { font-family: "D2Coding", Consolas, "SF Mono", monospace; font-size: .88em; background: var(--surface-2);
+  padding: .1em .4em; border-radius: 5px; border: 1px solid var(--line); }
+
+/* 상단 바 */
+.topbar { position: sticky; top: 0; z-index: 20; height: 56px; display: flex; align-items: center; gap: 12px;
+  padding: 0 20px; background: color-mix(in srgb, var(--surface) 88%, transparent); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line); }
+.topbar .brand { font-weight: 700; font-size: 15px; white-space: nowrap; }
+.topbar .brand span { color: var(--accent); }
+.progress { flex: 1; display: flex; align-items: center; gap: 10px; justify-content: flex-end; font-size: 13px; color: var(--text-2); }
+.progress .bar { width: 160px; height: 6px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.progress .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s; }
+.icon-btn { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 8px;
+  height: 34px; min-width: 34px; padding: 0 10px; cursor: pointer; font: inherit; font-size: 13px; white-space: nowrap; flex: none; }
+#menuBtn { display: none; }
+
+/* 레이아웃 */
+.layout { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
+.sidebar { position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; padding: 24px 12px 40px 20px;
+  border-right: 1px solid var(--line); font-size: 14px; }
+.nav-top { display: block; padding: 7px 10px; border-radius: 8px; color: var(--text); text-decoration: none; font-weight: 600; line-height: 1.45; }
+.nav-top:hover { background: var(--surface-2); }
+.nav-num { display: block; font-size: 11.5px; font-weight: 700; color: var(--accent); letter-spacing: .02em; }
+.nav-group { margin-top: 6px; }
+.nav-subs { display: none; padding: 2px 0 6px 10px; border-left: 2px solid var(--line); margin-left: 12px; }
+.nav-group.open .nav-subs, .nav-group.always .nav-subs { display: block; }
+.nav-sub { display: block; padding: 4px 10px; color: var(--text-2); text-decoration: none; font-size: 13px; line-height: 1.45; border-radius: 6px; }
+.nav-sub:hover { background: var(--surface-2); color: var(--text); }
+.nav-top.active, .nav-sub.active { color: var(--accent-text); background: var(--accent-soft); }
+main { padding: 32px 48px 120px; min-width: 0; }
+.wrap { max-width: 860px; }
+
+/* 히어로 */
+.hero { padding: 8px 0 28px; }
+.eyebrow { display: inline-block; font-size: 13px; font-weight: 700; color: var(--accent-text); background: var(--accent-soft);
+  padding: 4px 10px; border-radius: 99px; }
+.hero h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.25; margin: 14px 0 12px; letter-spacing: -0.02em; }
+.hero .lead { font-size: 17px; color: var(--text-2); margin: 0 0 20px; }
+.stats { display: flex; flex-wrap: wrap; gap: 10px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; font-size: 14px; color: var(--text-2); }
+.stat b { color: var(--text); font-size: 16px; margin-right: 4px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; margin: 20px 0; }
+.card h2 { margin: 0 0 12px; font-size: 22px; }
+.howto { counter-reset: s; list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.howto li { counter-increment: s; display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: start; }
+.howto li::before { content: counter(s); width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff;
+  display: grid; place-items: center; font-size: 13px; font-weight: 700; margin-top: 2px; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; font-size: 13px; }
+.legend span { padding: 3px 10px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface-2); }
+
+/* 교시 */
+.session, .setup { margin-top: 56px; }
+.session-head { border-top: 3px solid var(--accent); padding-top: 22px; }
+.session-meta { display: flex; gap: 10px; align-items: center; }
+.badge { background: var(--accent); color: #fff; font-weight: 700; font-size: 13px; padding: 3px 10px; border-radius: 6px; }
+.time { font-size: 14px; color: var(--text-2); }
+.session h2, .setup h2 { font-size: clamp(24px, 3vw, 30px); line-height: 1.3; margin: 10px 0 6px; letter-spacing: -0.015em; }
+.session-result { margin: 0 0 18px; color: var(--text-2); font-size: 15px; }
+.materials { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; margin: 0 0 28px; }
+.mat-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.materials ul { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; }
+.materials li { display: flex; gap: 8px; align-items: baseline; font-size: 14.5px; }
+.mat-kind { font-size: 12px; color: var(--text-3); min-width: 58px; }
+.mat-desc { color: var(--text-3); font-size: 13px; }
+.mat-help { font-size: 13px; color: var(--text-3); margin: 10px 0 0; }
+.btn { display: inline-block; font-size: 13.5px; font-weight: 600; padding: 7px 14px; border-radius: 8px;
+  background: var(--accent-soft); color: var(--accent-text); text-decoration: none; border: 1px solid transparent; }
+.btn:hover { border-color: var(--accent); }
+.session-foot { margin-top: 40px; padding-top: 20px; border-top: 1px dashed var(--line); color: var(--text-2); }
+
+.card .mat-head { margin-bottom: 4px; }
+
+/* 본문 */
+.content h3 { font-size: 23px; line-height: 1.35; margin: 52px 0 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line); letter-spacing: -0.01em; }
+.content h4 { font-size: 19px; margin: 32px 0 10px; }
+.content h5 { font-size: 16.5px; margin: 24px 0 8px; }
+.content p { margin: 10px 0; }
+.content hr { display: none; }
+.content ul, .content ol { padding-left: 1.4em; margin: 10px 0; }
+.content li { margin: 4px 0; }
+.content li::marker { color: var(--text-3); }
+.indent { padding-left: 1.2em; }
+.kicker { margin: 40px 0 -4px; font-size: 12.5px; font-weight: 800; letter-spacing: .12em; color: var(--accent-text); }
+.step { display: flex; align-items: center; gap: 10px; margin: 36px 0 10px; font-weight: 700; font-size: 17px;
+  padding: 10px 14px; background: var(--accent-soft); color: var(--accent-text); border-radius: 10px; }
+.step-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+
+.table-wrap { overflow-x: auto; margin: 14px 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.6; }
+th, td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+th { background: var(--surface-2); font-weight: 700; font-size: 13.5px; color: var(--text-2); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.nowrap { white-space: nowrap; }
+td.chk { text-align: center; width: 64px; }
+table.checklist tr:has(input:checked) td:not(.chk) { color: var(--text-3); text-decoration: line-through; }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); cursor: pointer; vertical-align: middle; }
+.todo { display: flex; gap: 10px; align-items: center; padding: 6px 0; cursor: pointer; }
+.todo:has(input:checked) span { color: var(--text-3); text-decoration: line-through; }
+
+.overview { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 16px 0 20px; }
+.ov-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 14.5px; line-height: 1.6; }
+.ov-k { font-size: 13px; font-weight: 700; color: var(--text-2); margin-bottom: 4px; }
+
+.note { display: flex; gap: 12px; padding: 14px 16px; border-radius: 10px; margin: 16px 0; background: var(--surface-2); font-size: 15px; line-height: 1.7; }
+.note-k { flex: none; font-size: 12.5px; font-weight: 700; padding-top: 2px; white-space: nowrap; }
+.note.tip { background: var(--tip-soft); } .note.tip .note-k { color: var(--tip); }
+.note.key { background: var(--key-soft); font-weight: 600; } .note.key .note-k { color: var(--key); }
+.note.warn { background: var(--warn-soft); } .note.warn .note-k { color: var(--warn); }
+.note.why { background: var(--surface); border: 1px solid var(--line); } .note.why .note-k { color: var(--text-2); }
+.note.stop { background: var(--accent-soft); } .note.stop .note-k { color: var(--accent-text); }
+.note-kids > p:first-child { margin-top: 4px; }
+.content blockquote.quote { margin: 16px 0; padding: 4px 0 4px 16px; border-left: 3px solid var(--accent); font-size: 16px; font-weight: 600; color: var(--text); }
+.content blockquote.quote p { font-weight: 400; color: var(--text-2); }
+
+.codebox, .prompt, .result { margin: 14px 0; border-radius: 10px; overflow: hidden; }
+.codebox { background: var(--code-bg); border: 1px solid var(--line); }
+.code-head, .prompt-head { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px 6px 14px; min-height: 36px; }
+.code-head { justify-content: flex-end; }
+.code-head .lang { margin-right: auto; font-size: 12px; color: var(--text-3); font-weight: 600; }
+.prompt { background: var(--prompt-bg); color: var(--prompt-text); }
+.prompt-head { background: var(--prompt-head); }
+.prompt-tag { font-size: 13px; font-weight: 700; }
+pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wrap; word-break: break-word;
+  font-family: "D2Coding", Consolas, "SF Mono", "Malgun Gothic", monospace; font-size: 14px; line-height: 1.65; }
+.codebox pre { padding-top: 0; }
+.copy { border: 1px solid var(--line); background: var(--surface); color: var(--text); border-radius: 6px; padding: 3px 10px;
+  font: inherit; font-size: 12.5px; cursor: pointer; }
+.prompt .copy { background: transparent; color: var(--prompt-text); border-color: #4a5068; }
+.copy.done { background: var(--key); color: #fff; border-color: var(--key); }
+
+.result { background: var(--key-soft); border: 1px solid color-mix(in srgb, var(--key) 25%, transparent); }
+.content p.result-label { margin: 18px 0 6px; font-size: 14px; font-weight: 700; color: var(--key); }
+.result-head { padding: 8px 14px 0; font-size: 13px; font-weight: 700; color: var(--key); }
+.result pre { padding-top: 6px; }
+
+details.toggle { border: 1px solid var(--line); border-radius: 10px; margin: 16px 0; background: var(--surface); }
+details.toggle summary { cursor: pointer; padding: 12px 16px; font-weight: 600; }
+.toggle-body { padding: 0 16px 12px; }
+
+.footer { margin-top: 80px; font-size: 13px; color: var(--text-3); }
+
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: fixed; left: 0; top: 56px; width: min(320px, 86vw); background: var(--surface); z-index: 30;
+    transform: translateX(-100%); transition: transform .25s; box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+  body.nav-open .sidebar { transform: none; }
+  #menuBtn { display: inline-block; }
+  main { padding: 24px 16px 100px; }
+  .progress .bar { width: 80px; }
+  .overview { grid-template-columns: 1fr; }
+  .card { padding: 18px 16px; }
+}
+#progTxt { white-space: nowrap; }
+@media (max-width: 520px) { .progress .label, .progress .cnt { display: none; } .topbar { padding: 0 12px; gap: 8px; } .topbar .brand { font-size: 14px; } .progress .bar { width: 56px; } }
+@media print {
+  .topbar, .sidebar, .copy, .session-foot .btn { display: none !important; }
+  .layout { display: block; } main { padding: 0; }
+  details.toggle { display: block; } details.toggle > .toggle-body { display: block; }
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <button class="icon-btn" id="menuBtn" type="button" aria-label="목차 열기">☰ 목차</button>
+  <div class="brand">AI 마스터클래스 <span>참고 자료</span></div>
+  <div class="progress"><span class="label">실습 진행</span><div class="bar"><i id="progBar"></i></div><span id="progTxt">0%</span></div>
+  <button class="icon-btn" id="themeBtn" type="button" aria-label="화면 테마 전환">◐</button>
+</header>
+<div class="layout">
+<nav class="sidebar" id="sidebar" aria-label="목차">
+<a class="nav-top" href="#guide">이 문서 사용법</a>
+<div class="nav-group always"><a class="nav-top" href="#s1"><span class="nav-num">4일차 B반 · 참고</span>LLM Wiki : LLM이 직접 유지하는 지식베이스</a><div class="nav-subs"><a class="nav-sub" href="#s1-h1">LLM이 직접 유지하는 개인 지식베이스</a><a class="nav-sub" href="#s1-h3">기존 RAG와 LLM Wiki의 차이</a><a class="nav-sub" href="#s1-h7">LLM Wiki는 ‘지속적으로 커지는 산출물’이다</a><a class="nav-sub" href="#s1-h13">사람과 LLM의 역할</a><a class="nav-sub" href="#s1-h14">LLM Wiki의 3계층 구조</a><a class="nav-sub" href="#s1-h23">3계층 구조 한눈에 보기</a><a class="nav-sub" href="#s1-h24">LLM Wiki의 세 가지 핵심 작업</a><a class="nav-sub" href="#s1-h32">index.md와 log.md</a><a class="nav-sub" href="#s1-h38">LLM Wiki는 어디에 활용할 수 있는가?</a><a class="nav-sub" href="#s1-h44">왜 LLM Wiki가 작동하는가?</a><a class="nav-sub" href="#s1-h45">Memex와의 관계</a><a class="nav-sub" href="#s1-h46">Obsidian과 함께 사용하기</a><a class="nav-sub" href="#s1-h52">Git으로 관리하기</a><a class="nav-sub" href="#s1-h53">검색 도구는 언제 필요한가?</a><a class="nav-sub" href="#s1-h55">실습 : 뉴트리원 업무 지식베이스용 LLM Wiki 시작하기</a><a class="nav-sub" href="#s1-h56">최소 WIKI 구성</a><a class="nav-sub" href="#s1-h57">raw/README.md</a><a class="nav-sub" href="#s1-h58">wiki/index.md</a><a class="nav-sub" href="#s1-h59">wiki/log.md</a><a class="nav-sub" href="#s1-h60">개인 지식 관리용 최소 Schema 예시</a><a class="nav-sub" href="#s1-h61">처음 사용하는 사람을 위한 운영 순서</a><a class="nav-sub" href="#s1-h74">자동화 수준 선택하기</a><a class="nav-sub" href="#s1-h77">개인 지식 관리용 LLM Wiki 사용 시 주의할 점</a></div></div>
+</nav>
+<main>
+<div class="wrap">
+  <section class="hero">
+    <span class="eyebrow">뉴트리원 AI 마스터클래스 · 참고 자료</span>
+    <h1>LLM Wiki — LLM이 직접 유지하는 지식베이스</h1>
+    <p class="lead">원본 자료를 매번 처음부터 검색하는 대신, LLM이 읽고 정리한 결과를 Markdown 위키로 계속 쌓고 갱신하는 방법입니다. 기존 RAG와의 차이, Raw Sources·Wiki·Schema 3계층 구조, Ingest·Query·Lint 운영법, index.md·log.md의 역할을 익히고, 뉴트리원 업무 지식베이스용 LLM Wiki를 직접 시작해봅니다. (4일차 B반 자료)</p>
+    <div class="stats">
+      <div class="stat"><b>4일차 B반</b>수업 자료</div><div class="stat"><b>개념 + 실습</b>8단계 운영 순서</div><div class="stat"><b>주의할 점</b>8가지</div>
+    </div>
+  </section>
+
+  <section class="card" id="guide">
+    <h2>처음 보는 분을 위한 사용법</h2>
+    <ol class="howto">
+      <li><div><strong>처음이라면 위에서부터 순서대로 읽으세요.</strong> 앞쪽은 개념(왜 필요한가·어떻게 생겼나), 뒤쪽 “실습”부터는 직접 만들어보는 순서입니다. 3회차 2교시 “내 업무 지식베이스 만들기”와 함께 보면 좋아요.</div></li><li><div><strong>왼쪽 목차로 필요한 주제만 골라 볼 수도 있어요.</strong> RAG와의 차이, 3계층 구조, Ingest·Query·Lint, 주의할 점처럼 주제별로 나뉘어 있습니다.</div></li><li><div><strong>어두운 상자의 요청문은 “복사” 버튼으로 그대로 붙여넣으세요.</strong> 대괄호 [ ] 부분만 내 상황에 맞게 바꾸면 됩니다.</div></li>
+    </ol>
+    <div class="legend"><span>✍️ 입력할 프롬프트</span><span>💡 TIP</span><span>✅ 이렇게 나오면 성공</span><span>📌 핵심</span><span>⚠️ 주의</span><span>🧭 왜 하나요</span><span>✋ 멈추고 확인</span><span>🎯 실습 개요</span></div>
+  </section>
+
+  
+
+  
+
+  
+
+  <section class="session" id="s1"><div class="session-head"><div class="session-meta"><span class="badge">4일차 B반 · 참고</span><span class="time">⏱ 읽기 자료</span></div><h2>LLM Wiki : LLM이 직접 유지하는 지식베이스</h2><p class="session-result">이 문서에서 다루는 것 · LLM Wiki 개념, 3계층 구조, 운영 방식, 뉴트리원 업무용 실습과 주의할 점</p></div><div class="materials"><div class="mat-head"><strong>📂 이 교시 자료</strong><a class="btn" href="https://teamsparta.notion.site/3d12dc3ef51480f79870e12a36ba7920" target="_blank" rel="noopener">원본 페이지 ↗</a></div><p class="mat-help">별도 실습 파일 없이 진행합니다. 실습 폴더는 본문 “실습” 안내를 따라 직접 만듭니다.</p></div><div class="content"><h3 id="s1-h1">LLM이 직접 유지하는 개인 지식베이스</h3>
+<div class="kicker">OVERVIEW</div>
+<ul><li>LLM Wiki란 무엇인가?</li><li>기존 파일 업로드·RAG 방식에는 어떤 한계가 있는가?</li><li>LLM Wiki의 핵심 차이는 무엇인가?</li><li>Raw Sources·Wiki·Schema의 3계층 구조</li><li>Ingest·Query·Lint 운영 방식</li><li><code>index.md</code>와 <code>log.md</code>의 역할</li><li>사람과 LLM은 각각 무엇을 담당하는가?</li><li>개인 지식 관리부터 뉴트리원 팀 업무까지 어떻게 적용할 수 있는가?</li><li>Obsidian과 Git은 왜 유용한가?</li><li>실습 : 뉴트리원 업무 지식베이스용 LLM Wiki 시작하기</li></ul>
+<div class="kicker">LECTURE</div>
+<h4 id="s1-h2">LLM Wiki란?</h4>
+<blockquote class="quote">LLM Wiki는 원본 자료를 매번 처음부터 검색하고 조합하는 대신,<div class="note-kids"><p>LLM이 자료를 읽고 정리한 결과를 <strong>지속적으로 축적하고 갱신하는 Markdown 기반 지식베이스</strong>입니다.</p></div></blockquote>
+<p>우리가 일반적으로 LLM과 문서를 활용하는 방식은 다음과 같습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>문서 업로드
+→ 질문
+→ 관련 문서 조각 검색
+→ 답변 생성</pre></div>
+<p>ChatGPT 파일 업로드, NotebookLM, 일반적인 RAG 시스템도 대체로 이런 흐름을 사용합니다.</p>
+<p>이 방식은 질문에 답하는 데 유용하지만, 한 가지 근본적인 한계가 있습니다.</p>
+<blockquote class="quote">LLM이 질문을 받을 때마다 관련 지식을 다시 찾아서 조합해야 한다는 점입니다.</blockquote>
+<p>예를 들어 다섯 개의 문서를 종합해야 답할 수 있는 질문이 있다면, LLM은 질문을 받을 때마다 다음 작업을 반복합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>관련 문서 찾기
+→ 필요한 부분 읽기
+→ 서로 연결하기
+→ 충돌 확인하기
+→ 답변 만들기</pre></div>
+<p>질문에 대한 답은 생성되지만, 이 과정에서 만들어진 구조와 연결 관계는 대화가 끝나면 사라질 수 있습니다. 즉, 지식이 계속 쌓이지 않습니다.</p>
+<p>LLM Wiki는 이 문제에서 출발합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>원본 문서
+→ LLM이 한 번 읽고 정리
+→ 구조화된 Wiki에 반영
+→ 다음 질문에서는 Wiki를 활용
+→ 새로운 분석도 다시 Wiki에 축적</pre></div>
+<hr>
+<h3 id="s1-h3">기존 RAG와 LLM Wiki의 차이</h3>
+<h4 id="s1-h4">일반적인 RAG</h4>
+<p>RAG는 사용자의 질문과 관련된 문서 조각을 찾아 LLM에게 전달합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>질문
+→ 원본 자료 검색
+→ 관련 조각 검색
+→ 답변 생성</pre></div>
+<p>장점은 분명합니다.</p>
+<ul><li>많은 문서 중 관련 내용만 찾을 수 있습니다.</li><li>모든 문서를 한꺼번에 입력하지 않아도 됩니다.</li><li>원본 자료를 근거로 답변할 수 있습니다.</li></ul>
+<p>하지만 질문할 때마다 지식을 다시 구성해야 합니다.</p>
+<h4 id="s1-h5">LLM Wiki</h4>
+<p>LLM Wiki에서는 원본 자료와 사용자 사이에 <strong>지속적인 Wiki 계층</strong>이 존재합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>사용자
+↕
+LLM Wiki
+↕
+Raw Sources</pre></div>
+<p>새로운 자료가 추가되면 LLM은 단순히 검색 대상으로 등록하지 않습니다.</p>
+<ul><li>핵심 내용을 추출합니다.</li><li>기존 개념 문서를 갱신합니다.</li><li>관련 인물이나 조직 페이지를 수정합니다.</li><li>기존 주장과 충돌하는 내용을 표시합니다.</li><li>여러 자료를 종합한 설명을 발전시킵니다.</li><li>관련 페이지 사이에 링크를 연결합니다.</li></ul>
+<p>따라서 지식은 매 질문마다 새로 만들어지는 것이 아니라, 한 번 정리된 뒤 지속적으로 최신 상태를 유지합니다.</p>
+<h4 id="s1-h6">비교</h4>
+<div class="table-wrap"><table><thead><tr><th>구분</th><th>일반적인 RAG</th><th>LLM Wiki</th></tr></thead><tbody><tr><td>기본 단위</td><td>검색된 문서 조각</td><td>구조화된 Wiki 페이지</td></tr><tr><td>지식 구성 시점</td><td>질문할 때마다</td><td>자료를 수집할 때 지속적으로</td></tr><tr><td>결과의 지속성</td><td>대화가 끝나면 사라질 수 있음</td><td>Markdown 파일로 보존</td></tr><tr><td>문서 간 연결</td><td>질문 시점에 다시 추론</td><td>미리 링크와 관계를 관리</td></tr><tr><td>충돌 처리</td><td>답변할 때 확인</td><td>Wiki 갱신 과정에서 지속 관리</td></tr><tr><td>지식의 누적</td><td>제한적</td><td>새로운 자료와 질문이 쌓일수록 성장</td></tr><tr><td>사람의 역할</td><td>질문하고 답변 확인</td><td>자료 선정, 방향 제시, 의미 판단</td></tr><tr><td>LLM의 역할</td><td>검색 결과를 바탕으로 답변</td><td>요약, 분류, 연결, 갱신, 유지보수</td></tr></tbody></table></div>
+<blockquote class="quote">🔑 <strong>핵심 차이</strong><div class="note-kids"><p>RAG는 필요할 때 원본을 다시 찾아 답을 만듭니다.</p>
+<p>LLM Wiki는 원본에서 얻은 지식을 미리 구조화하고 계속 축적합니다.</p></div></blockquote>
+<hr>
+<h3 id="s1-h7">LLM Wiki는 ‘지속적으로 커지는 산출물’이다</h3>
+<p>LLM Wiki에서 중요한 것은 단순히 Markdown 파일이 있다는 사실이 아닙니다.</p>
+<p>핵심은 Wiki가 다음 특성을 가진다는 점입니다.</p>
+<h5 id="s1-h8">1. 지속성</h5>
+<p>: LLM이 만든 요약과 분석이 채팅 안에서 사라지지 않고 파일로 남습니다.</p>
+<h5 id="s1-h9">2. 누적성</h5>
+<p>: 새로운 자료가 추가될 때 기존 Wiki가 함께 발전합니다.</p>
+<h5 id="s1-h10">3. 연결성</h5>
+<p>개념, 인물, 사건, 조직, 주장 사이의 관계가 링크로 연결됩니다.</p>
+<h5 id="s1-h11">4. 정합성</h5>
+<p>새로운 자료가 기존 설명과 충돌하면 관련 페이지를 함께 검토합니다.</p>
+<h5 id="s1-h12">5. 재사용성</h5>
+<p>한 번 만들어진 비교나 분석을 다음 질문에서 다시 활용할 수 있습니다.</p>
+<p>카파시의 LLM WIKI에 대한 설명에서는 <strong>persistent, compounding artifact</strong>, 즉 지속적으로 복리처럼 성장하는 산출물로 설명합니다. 새로운 자료와 질문이 추가될수록 Wiki의 연결·모순 표시·종합 설명이 더 풍부해집니다.</p>
+<hr>
+<h3 id="s1-h13">사람과 LLM의 역할</h3>
+<p>LLM Wiki에서는 사람이 Wiki를 직접 계속 작성하는 것이 기본 모델이 아닙니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>사람
+= 좋은 자료를 선정한다.
+= 탐구할 방향을 정한다.
+= 좋은 질문을 한다.
+= 결과가 어떤 의미인지 판단한다.
+
+LLM
+= 자료를 읽는다.
+= 요약한다.
+= 적절한 위치에 분류한다.
+= 관련 페이지를 연결한다.
+= 기존 내용을 갱신한다.
+= 충돌과 누락을 관리한다.</pre></div>
+<p>원문에서는 사용자가 Wiki를 직접 작성하는 경우는 드물고, LLM이 요약·교차 참조·파일 정리·장부 관리 같은 반복 업무를 담당한다고 설명합니다. 사람은 자료 선정과 탐색, 올바른 질문, 해석에 집중합니다.</p>
+<p>이를 개발 환경에 비유하면 다음과 같습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>Obsidian
+= Wiki를 탐색하는 IDE
+
+LLM Agent
+= Wiki를 작성하고 유지하는 프로그래머
+
+Markdown Wiki
+= 관리되는 지식 코드베이스</pre></div>
+<p>사용자는 Obsidian 같은 도구로 페이지와 링크를 살펴보고, LLM은 대화 내용을 바탕으로 파일을 수정합니다.</p>
+<hr>
+<h3 id="s1-h14">LLM Wiki의 3계층 구조</h3>
+<p>LLM Wiki는 크게 세 계층으로 구성됩니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>1. Raw Sources
+2. Wiki
+3. Schema</pre></div>
+<h4 id="s1-h15">1. Raw Sources</h4>
+<blockquote class="quote">Raw Sources는 사용자가 선별한 원본 자료 모음입니다.</blockquote>
+<p>예:</p>
+<ul><li>기사</li><li>논문</li><li>책의 장별 메모</li><li>이미지</li><li>데이터 파일</li><li>회의록</li><li>인터뷰 기록</li><li>팟캐스트 메모</li><li>웹페이지</li><li>개인 일지</li></ul>
+<h5 id="s1-h16">핵심 원칙</h5>
+<ul><li>사람이 수집한다.</li><li>LLM은 읽는다.</li><li>LLM은 원본을 수정하지 않는다.</li></ul>
+<p>Raw Sources는 <strong>불변 자료</strong>입니다.</p>
+<p>LLM이 원문을 요약하면서 내용을 잘못 해석했을 때, 다시 확인할 수 있는 기준이 되어야 하기 때문입니다. </p>
+<h5 id="s1-h17">예시 구조</h5>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>raw/
+├─ articles/
+│  ├─ article-001.md
+│  └─ article-002.md
+├─ papers/
+│  ├─ paper-001.pdf
+│  └─ paper-002.pdf
+├─ images/
+├─ transcripts/
+└─ data/</pre></div>
+<h4 id="s1-h18">2. The Wiki</h4>
+<blockquote class="quote">Wiki는 LLM이 생성하고 유지하는 Markdown 문서 모음입니다.</blockquote>
+<p>Wiki에는 다음과 같은 페이지가 들어갈 수 있습니다.</p>
+<ul><li>자료별 요약</li><li>인물 페이지</li><li>기업·기관 페이지</li><li>핵심 개념 페이지</li><li>사건 페이지</li><li>비교 페이지</li><li>전체 개요</li><li>여러 자료를 종합한 분석</li><li>변화하는 가설이나 논지</li><li>질문을 통해 새로 발견한 연결 관계</li></ul>
+<h5 id="s1-h19">예시 구조</h5>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>wiki/
+├─ index.md
+├─ log.md
+├─ overview.md
+├─ sources/
+│  ├─ article-001-summary.md
+│  └─ paper-001-summary.md
+├─ entities/
+│  ├─ person-a.md
+│  └─ company-b.md
+├─ concepts/
+│  ├─ llm-agents.md
+│  └─ retrieval-augmented-generation.md
+├─ comparisons/
+│  └─ rag-vs-llm-wiki.md
+└─ synthesis/
+   └─ evolving-thesis.md</pre></div>
+<h5 id="s1-h20">LLM이 담당하는 작업</h5>
+<ul><li>새 페이지 생성</li><li>기존 페이지 수정</li><li>관련 페이지 링크 연결</li><li>새로운 자료에 따른 요약 갱신</li><li>오래된 주장 수정</li><li>모순 표시</li><li>중복 페이지 통합</li><li>인덱스 갱신</li><li>문서 간 일관성 유지</li></ul>
+<p>이 구조에서 사용자는 Wiki를 읽고 탐색하며, LLM이 Wiki를 작성하고 유지합니다.</p>
+<h4 id="s1-h21">3. The Schema</h4>
+<blockquote class="quote">Schema는 LLM에게 Wiki를 어떻게 만들고 관리할지 알려주는 운영 규칙입니다.</blockquote>
+<p>Claude Code에서는 <code>CLAUDE.md</code>, Codex 계열에서는 <code>AGENTS.md</code> 같은 파일을 사용할 수 있습니다.</p>
+<p>Schema에는 다음과 같은 내용이 들어갑니다.</p>
+<ul><li>전체 디렉터리 구조</li><li>파일 이름 규칙</li><li>페이지별 목적</li><li>링크 작성 방식</li><li>출처 표기 규칙</li><li>Raw Sources 수정 금지 규칙</li><li>새 자료 수집 절차</li><li>질문 응답 절차</li><li>Wiki 점검 절차</li><li><code>index.md</code>와 <code>log.md</code> 관리 방식</li><li>중복·모순 처리 방법</li><li>YAML frontmatter 규칙</li></ul>
+<h5 id="s1-h22">예시</h5>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># LLM Wiki Schema
+
+## 계층
+
+- `raw/`: 사람이 추가한 원본 자료. 수정 금지.
+- `wiki/`: LLM이 생성하고 관리하는 지식 문서.
+- `wiki/index.md`: 전체 페이지 색인.
+- `wiki/log.md`: 작업 이력.
+
+## 자료 수집 규칙
+
+새로운 자료가 추가되면:
+
+1. 원문을 읽는다.
+2. 자료별 요약 페이지를 생성한다.
+3. 관련 개념과 인물 페이지를 갱신한다.
+4. 기존 주장과 충돌하는 내용을 표시한다.
+5. index.md를 갱신한다.
+6. log.md에 처리 기록을 추가한다.
+
+## 작성 규칙
+
+- 모든 주요 주장에 출처를 연결한다.
+- 원본 자료를 수정하지 않는다.
+- 중복 페이지를 만들기 전에 index.md를 확인한다.
+- 새 자료가 기존 내용을 대체하면 이유를 기록한다.</pre></div>
+<p>Schema가 있기 때문에 LLM은 일반적인 챗봇이 아니라 <strong>규칙을 따르는 Wiki 관리자</strong>처럼 행동할 수 있습니다.</p>
+<p>이 문서는 처음부터 완벽할 필요가 없습니다. 사용자가 Wiki를 운영하면서 자신에게 맞는 방식이 무엇인지 발견하면 LLM과 함께 계속 개선합니다.</p>
+<hr>
+<h3 id="s1-h23">3계층 구조 한눈에 보기</h3>
+<div class="table-wrap"><table><thead><tr><th>계층</th><th>소유자</th><th>LLM 권한</th><th>역할</th></tr></thead><tbody><tr><td>Raw Sources</td><td>사람</td><td>읽기만 가능</td><td>원본 근거와 사실 보존</td></tr><tr><td>Wiki</td><td>LLM</td><td>생성·수정·연결</td><td>지식 요약, 구조화, 종합</td></tr><tr><td>Schema</td><td>사람 + LLM</td><td>공동 개선</td><td>Wiki 구조와 작업 절차 정의</td></tr></tbody></table></div>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>사람이 원본을 선택한다.
+       ↓
+LLM이 Wiki로 구조화한다.
+       ↓
+Schema가 전체 작업 방식을 통제한다.</pre></div>
+<hr>
+<h3 id="s1-h24">LLM Wiki의 세 가지 핵심 작업</h3>
+<p>LLM Wiki는 크게 세 가지 작업을 반복합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>Ingest
+Query
+Lint</pre></div>
+<h4 id="s1-h25">1. Ingest: 새로운 자료를 지식베이스에 통합하기</h4>
+<p>Ingest는 단순한 파일 업로드가 아닙니다.</p>
+<blockquote class="quote">새 자료를 읽고 기존 Wiki 전체에 필요한 변화를 반영하는 과정입니다.</blockquote>
+<h5 id="s1-h26">기본 흐름</h5>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>새 원본 추가
+→ LLM이 원본 읽기
+→ 핵심 내용 논의
+→ 자료 요약 페이지 생성
+→ 관련 개념 페이지 갱신
+→ 관련 인물·기관 페이지 갱신
+→ 기존 주장과 충돌 확인
+→ index 갱신
+→ log 기록</pre></div>
+<p>하나의 자료가 여러 개념과 연결돼 있다면 한 번의 Ingest로 여러 Wiki 페이지가 함께 변경될 수 있습니다.</p>
+<p>원문에서는 하나의 자료가 10~15개 페이지에 영향을 줄 수도 있다고 설명합니다. 또한 자료를 한 번에 하나씩 처리하며 사람이 요약과 업데이트를 확인할 수도 있고, 여러 자료를 일괄 처리할 수도 있다고 설명합니다. 중요한 것은 자신에게 맞는 처리 방식을 Schema에 기록하는 것입니다.</p>
+<h5 id="s1-h27">예시</h5>
+<p>새 논문:</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>raw/papers/llm-memory-2026.pdf</pre></div>
+<p>Ingest 후 변경:</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>wiki/sources/llm-memory-2026.md      # 논문 요약 생성
+wiki/concepts/llm-memory.md          # 개념 내용 갱신
+wiki/concepts/rag.md                 # 비교 내용 추가
+wiki/comparisons/rag-vs-memory.md    # 비교표 갱신
+wiki/synthesis/knowledge-systems.md  # 종합 분석 수정
+wiki/index.md                        # 신규 페이지 등록
+wiki/log.md                          # 처리 내역 기록</pre></div>
+<hr>
+<h4 id="s1-h28">2. Query: Wiki를 바탕으로 질문하고 결과를 다시 축적하기</h4>
+<p>Query는 Wiki에 질문하는 과정입니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>질문
+→ index에서 관련 페이지 찾기
+→ 필요한 Wiki 페이지 읽기
+→ 필요하면 원본 확인
+→ 답변 종합
+→ 출처와 함께 제공</pre></div>
+<p>답변은 다양한 형식으로 만들 수 있습니다.</p>
+<ul><li>Markdown 문서</li><li>비교표</li><li>보고서</li><li>프레젠테이션</li><li>차트</li><li>캔버스</li><li>새로운 개념 페이지</li></ul>
+<p>여기서 중요한 점은 <strong>좋은 답변을 채팅에만 남기지 않는 것</strong>입니다.</p>
+<p>예를 들어 사용자가 다음 질문을 했다고 가정해봅시다.</p>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 요청문</span><button class="copy" type="button">복사</button></div><pre>RAG와 LLM Wiki의 차이를 비교해줘.</pre></div>
+<p>LLM이 유용한 비교표와 분석을 만들었다면 이를 새 문서로 저장할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>wiki/comparisons/rag-vs-llm-wiki.md</pre></div>
+<p>이제 다음 질문에서는 이 분석을 다시 처음부터 만들 필요가 없습니다.</p>
+<p>원문에서는 비교, 분석, 새로 발견한 연결처럼 가치 있는 답변을 Wiki에 다시 저장하면 탐색 결과까지 지식베이스에 누적된다고 설명합니다.</p>
+<hr>
+<h4 id="s1-h29">3. Lint: Wiki의 건강 상태 점검하기</h4>
+<p>Wiki가 커질수록 페이지가 늘어나고 서로 충돌할 수 있습니다.</p>
+<p>Lint는 LLM에게 Wiki 전체를 점검하도록 요청하는 과정입니다.</p>
+<h5 id="s1-h30">점검 항목</h5>
+<ul><li>서로 모순되는 페이지가 있는가?</li><li>새로운 자료가 오래된 주장을 대체했는가?</li><li>아무 페이지에서도 연결되지 않은 고립 페이지가 있는가?</li><li>자주 언급되지만 독립 페이지가 없는 개념이 있는가?</li><li>필요한 교차 링크가 빠져 있는가?</li><li>같은 내용을 중복해서 설명하는 페이지가 있는가?</li><li>출처가 부족한 주장이 있는가?</li><li>추가 조사가 필요한 데이터 공백이 있는가?</li></ul>
+<h5 id="s1-h31">예시 요청</h5>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 요청문</span><button class="copy" type="button">복사</button></div><pre>Wiki 전체를 점검해줘.
+
+- 서로 충돌하는 주장
+- 오래된 정보
+- 링크가 없는 고립 페이지
+- 별도 페이지가 필요한 중요 개념
+- 누락된 교차 참조
+- 추가 자료가 필요한 영역
+
+을 찾아서 수정 제안을 작성해줘.</pre></div>
+<p>Lint는 단순한 오탈자 검사가 아닙니다.</p>
+<blockquote class="quote">지식베이스의 연결성·최신성·정합성을 유지하는 작업입니다.</blockquote>
+<p>원문에서는 LLM이 새로운 조사 질문과 추가할 자료까지 제안할 수 있으며, 이런 점검을 통해 Wiki가 성장해도 건강하게 유지된다고 설명합니다.</p>
+<hr>
+<h3 id="s1-h32"><code>index.md</code>와 <code>log.md</code></h3>
+<p>Wiki가 커지면 두 가지 특별한 문서가 중요해집니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>index.md
+= 무엇이 어디에 있는가?
+
+log.md
+= 언제 무엇을 했는가?</pre></div>
+<h4 id="s1-h33"><code>index.md</code>: 콘텐츠 중심 색인</h4>
+<p><code>index.md</code>는 Wiki 전체의 지도입니다.</p>
+<p>각 페이지에 대해 다음 내용을 기록할 수 있습니다.</p>
+<ul><li>문서 링크</li><li>한 줄 설명</li><li>분류</li><li>작성일 또는 갱신일</li><li>관련 원본 개수</li><li>주요 태그</li></ul>
+<h5 id="s1-h34">예시</h5>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># Wiki Index
+
+## Overview
+
+- [[overview]] — 전체 지식베이스 개요
+- [[synthesis/evolving-thesis]] — 현재까지의 종합 논지
+
+## Concepts
+
+- [[concepts/rag]] — 검색 증강 생성의 구조와 한계
+- [[concepts/llm-wiki]] — LLM 기반 누적형 지식베이스
+- [[concepts/knowledge-compounding]] — 지식 누적과 재사용
+
+## Comparisons
+
+- [[comparisons/rag-vs-llm-wiki]] — 두 접근 방식 비교
+
+## Sources
+
+- [[sources/article-001]] — LLM Wiki 아이디어 원문 요약</pre></div>
+<p>LLM은 질문을 받으면 먼저 <code>index.md</code>를 읽고 관련 페이지를 찾을 수 있습니다.</p><div class="indent"><p>약 100개의 자료와 수백 개 수준의 페이지까지는 이런 색인만으로도 유용하게 탐색할 수 있으며, 반드시 처음부터 임베딩 기반 RAG 시스템을 만들 필요는 없습니다.</p></div>
+<h4 id="s1-h35"><code>log.md</code>: 시간 중심 작업 기록</h4>
+<p><code>log.md</code>는 Wiki가 어떻게 변화했는지 보여주는 시간순 기록입니다.</p>
+<p>원문은 이 문서를 <strong>추가 전용(append-only)</strong> 기록으로 규정합니다. 새 항목은 항상 아래에 덧붙이고, 이미 기록한 항목은 수정하거나 삭제하지 않습니다.</p>
+<ul><li>과거에 어떤 판단을 왜 내렸는지 나중에 추적할 수 있습니다.</li><li>Wiki 페이지가 바뀐 이유를 되짚을 근거가 남습니다.</li><li>기록을 고치기 시작하면 Wiki의 실제 변경 이력과 로그가 어긋납니다.</li></ul>
+<p>이전 기록에 오류가 있다면 그 항목을 수정하는 대신, 새 항목에 정정 사실을 기록합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>## [2026-07-25] correction | 07-22 query 기록 정정
+
+- 이전 기록에서 비교 대상 자료를 잘못 표기했다.
+- 실제 비교 대상: sources/경쟁브랜드-루테인-분석
+- 원 기록은 그대로 두고 이 항목으로 정정한다.</pre></div>
+<h5 id="s1-h36">기록 대상</h5>
+<ul><li>새로운 자료 Ingest</li><li>중요한 Query</li><li>Wiki에 저장된 분석</li><li>Lint 실행</li><li>구조 변경</li><li>Schema 변경</li></ul>
+<h5 id="s1-h37">예시</h5>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># Wiki Log
+
+## [2026-07-20] ingest | LLM Wiki Idea
+
+- 원본 자료 추가
+- llm-wiki 개념 페이지 생성
+- rag 비교 페이지 갱신
+- index 갱신
+
+## [2026-07-22] query | RAG와 LLM Wiki 비교
+
+- 비교 분석 수행
+- comparisons/rag-vs-llm-wiki.md 생성
+
+## [2026-07-25] lint | 전체 Wiki 점검
+
+- 고립 페이지 2개 발견
+- 오래된 주장 1개 수정
+- 교차 링크 5개 추가</pre></div>
+<p>일관된 제목 형식을 사용하면 간단한 명령어로 최근 기록을 확인할 수도 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>grep&quot;^## \[&quot; log.md | tail-5</pre></div>
+<p><code>index.md</code>와 <code>log.md</code>의 차이는 명확합니다.</p>
+<div class="table-wrap"><table><thead><tr><th>문서</th><th>기준</th><th>답하는 질문</th></tr></thead><tbody><tr><td><code>index.md</code></td><td>콘텐츠</td><td>어떤 지식이 어디에 있는가?</td></tr><tr><td><code>log.md</code></td><td>시간</td><td>Wiki에서 언제 무엇이 일어났는가?</td></tr></tbody></table></div>
+<p><code>log.md</code> 는 Ingest·Query·Lint의 시간순 기록이며, Wiki가 최근 어떻게 변화했는지 LLM이 이해하는 데 도움을 줍니다.</p>
+<hr>
+<h3 id="s1-h38">LLM Wiki는 어디에 활용할 수 있는가?</h3>
+<h4 id="s1-h39">1. 개인 지식 관리</h4>
+<p>다음 자료를 한곳에 축적할 수 있습니다.</p>
+<ul><li>개인 목표</li><li>건강 기록</li><li>심리·감정 일지</li><li>자기계발 자료</li><li>읽은 기사</li><li>팟캐스트 메모</li><li>회고</li></ul>
+<p>예:</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>Raw Sources
+= 일기, 건강 기록, 읽은 기사, 팟캐스트 메모
+
+Wiki
+= 목표 페이지, 습관 페이지, 건강 경향, 반복되는 문제,
+  장기 변화, 중요한 사건 사이의 관계</pre></div>
+<p>시간이 지나면 단순한 메모 모음이 아니라 자신에 대한 구조화된 그림을 만들 수 있습니다.</p>
+<h4 id="s1-h40">2. 장기 리서치</h4>
+<p>몇 주 또는 몇 달 동안 하나의 주제를 연구할 때 사용할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>논문
+기사
+보고서
+인터뷰
+통계 데이터</pre></div>
+<p>를 계속 추가하면서 다음을 발전시킬 수 있습니다.</p>
+<ul><li>핵심 개념</li><li>주요 연구자</li><li>서로 다른 주장</li><li>논쟁 지점</li><li>연구 결과 비교</li><li>계속 변화하는 종합 논지</li></ul>
+<p>일반적인 폴더는 자료를 저장하지만, LLM Wiki는 자료 사이의 관계와 축적된 해석을 관리합니다.</p>
+<h4 id="s1-h41">3. 책 읽기</h4>
+<p>책을 장별로 읽으며 Wiki를 만들 수도 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>Raw Sources
+= 각 장의 메모 또는 원문
+
+Wiki
+= 등장인물, 장소, 사건, 주제, 복선, 인물 관계,
+  장별 요약, 전체 줄거리</pre></div>
+<p>판타지나 역사서처럼 등장인물과 사건이 많은 책에 특히 적합합니다.</p>
+<p>책을 다 읽을 때쯤에는 개인용 동반 Wiki가 완성됩니다. 원문은 인물·장소·사건·언어가 연결된 팬 Wiki와 유사한 개인 지식베이스를 LLM이 유지할 수 있다고 설명합니다.</p>
+<h4 id="s1-h42">4. 비즈니스와 팀</h4>
+<p>뉴트리원에서 발생하는 다음 자료를 Raw Sources로 사용할 수 있습니다.</p>
+<ul><li>사내 메신저·메일 논의</li><li>주간회의록과 회의 녹취</li><li>제품 기획서와 상세페이지 원고</li><li>고객문의(VOC)와 오픈마켓 리뷰</li><li>영업·MD 미팅 기록</li><li>표시·광고 심의 및 사내 규정 문서</li><li>원료·기능성 리서치 자료</li></ul>
+<p>LLM은 이를 바탕으로 다음 Wiki를 관리할 수 있습니다.</p>
+<ul><li>원료와 기능성 개념</li><li>제품·브랜드 페이지</li><li>고객이 반복해서 묻는 질문</li><li>채널별 운영 규칙</li><li>경쟁 브랜드 비교</li><li>사내 용어 사전</li><li>프로젝트별 지식</li><li>회의에서 나온 주요 결정과 논점</li></ul>
+<p>팀이 직접 Wiki를 계속 정리하지 않아도 LLM이 유지보수를 담당하므로 문서가 오래된 상태로 방치되는 문제를 줄일 수 있습니다. 표시·광고 문구나 고객 응대 기준처럼 민감하거나 중요한 변경에는 담당자가 검토하는 절차를 추가합니다.</p>
+<h4 id="s1-h43">5. 그 밖의 활용</h4>
+<ul><li>경쟁 브랜드 분석</li><li>신규 원료·소재 조사</li><li>채널·유통사 정보 정리</li><li>교육·강의 노트</li><li>신제품 컨셉 조사</li><li>표시·광고 등 법규 자료 정리</li><li>캔페인 회고와 사례 정리</li><li>콘텐츠·키워드 리서치</li></ul>
+<p>공통 조건은 하나입니다.</p>
+<blockquote class="quote">시간이 지나면서 자료가 계속 쌓이고, 그 자료를 흩어진 상태가 아니라 구조화된 지식으로 유지하고 싶을 때 적합합니다.</blockquote>
+<hr>
+<h3 id="s1-h44">왜 LLM Wiki가 작동하는가?</h3>
+<p>사람들이 Wiki를 포기하는 이유는 지식을 읽거나 생각하는 일이 어려워서만은 아닙니다.</p>
+<p>더 큰 문제는 유지보수입니다.</p>
+<ul><li>새 페이지를 적절한 위치에 배치합니다.</li><li>관련 문서에 링크를 추가합니다.</li><li>오래된 요약을 갱신합니다.</li><li>새로운 자료와 충돌하는 주장을 수정합니다.</li><li>중복 페이지를 정리합니다.</li><li>색인과 메타데이터를 관리합니다.</li><li>여러 페이지의 표현을 일관되게 유지합니다.</li></ul>
+<p>문서가 많아질수록 이런 관리 비용은 커집니다.</p>
+<p>LLM은 이런 반복 관리 작업에 적합합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>사람
+= 지식의 의미와 방향을 판단
+
+LLM
+= 반복되는 정리와 유지보수 수행</pre></div>
+<p>원문에서는 인간이 Wiki를 포기하는 이유를 유지 비용이 가치보다 빠르게 증가하기 때문이라고 설명합니다. 반면 LLM은 여러 페이지를 한 번에 수정하고 교차 참조를 갱신하는 작업을 반복적으로 수행할 수 있어 유지 비용을 크게 낮출 수 있습니다.</p>
+<hr>
+<h3 id="s1-h45">Memex와의 관계</h3>
+<p>LLM Wiki 아이디어는 버니바 부시가 1945년에 제안한 <strong>Memex</strong>와 정신적으로 연결됩니다.</p>
+<p>Memex는 개인이 수집한 자료를 저장하고, 자료 사이의 연관 경로를 따라 탐색하는 지식 장치를 구상한 개념입니다.</p>
+<p>핵심은 단순히 자료를 많이 저장하는 것이 아니었습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>문서 A
+↔ 관련 개념
+↔ 문서 B
+↔ 사건 C
+↔ 새로운 해석</pre></div>
+<p>자료 사이의 연결 자체가 중요한 지식이라는 생각입니다.</p>
+<p>하지만 당시에는 누가 그 연결과 정리를 지속적으로 관리할지가 해결되지 않았습니다.</p>
+<p>LLM Wiki에서는 LLM이 그 유지보수 역할을 맡습니다. 카파시는 Memex의 개인적·능동적·연결 중심 지식 저장소라는 비전과 LLM Wiki가 유사하며, 당시 해결하기 어려웠던 관리 문제를 LLM이 담당한다고 설명합니다.</p>
+<h3 id="s1-h46">Obsidian과 함께 사용하기</h3>
+<p>LLM Wiki는 Markdown 파일로 구성되기 때문에 Obsidian과 잘 맞습니다.</p>
+<h4 id="s1-h47">Obsidian의 역할</h4>
+<ul><li>Markdown 페이지 탐색</li><li>내부 링크 이동</li><li>백링크 확인</li><li>그래프 뷰</li><li>YAML 메타데이터 활용</li><li>플러그인을 통한 확장</li></ul>
+<h5 id="s1-h48">Graph View</h5>
+<p>그래프 뷰에서는 다음을 시각적으로 볼 수 있습니다.</p>
+<ul><li>어떤 페이지가 중심 허브인가?</li><li>어떤 개념이 많이 연결돼 있는가?</li><li>연결되지 않은 고립 페이지가 있는가?</li><li>특정 연구 영역이 어떻게 구성되어 있는가?</li></ul>
+<h5 id="s1-h49">Web Clipper</h5>
+<p>웹 기사를 Markdown으로 저장해 Raw Sources에 추가할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>웹 기사
+→ Obsidian Web Clipper
+→ raw/articles/
+→ LLM Ingest
+→ Wiki 갱신</pre></div>
+<h5 id="s1-h50">이미지 로컬 저장</h5>
+<p>웹 기사를 클리핑하면 이미지가 외부 URL로만 연결되는 경우가 많습니다. 링크가 깨지면 근거가 사라지므로 이미지를 로컬에 내려받아 두는 것이 좋습니다.</p>
+<p>원문이 제시하는 Obsidian 설정 순서는 다음과 같습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>1. Settings → Files and links → Attachment folder path
+   = 고정 경로 지정 (예: raw/assets/)
+
+2. Settings → Hotkeys → &quot;Download&quot; 검색
+   = &quot;Download attachments for current file&quot;에 단축키 지정
+     (예: Ctrl+Shift+D)
+
+3. 기사를 클리핑한 뒤 단축키 실행
+   = 해당 문서의 이미지가 모두 로컬 디스크에 저장됨</pre></div>
+<p>이렇게 하면 LLM이 깨질 수 있는 URL에 의존하지 않고 이미지를 직접 참조할 수 있습니다. 필수는 아니며 자료가 텍스트뿐이라면 건너뛰어도 됩니다.</p>
+<p>다만 현재 LLM은 인라인 이미지가 포함된 Markdown을 한 번에 읽지 못합니다. 원문이 제시하는 우회 방법은 다음과 같습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>1단계: LLM이 문서의 텍스트를 먼저 읽는다.
+2단계: 참조된 이미지를 별도로 확인해 추가 맥락을 얻는다.</pre></div>
+<p>다소 번거로우지만 실용적으로는 충분히 작동한다고 설명합니다.</p>
+<h5 id="s1-h51">Dataview</h5>
+<p>페이지에 YAML frontmatter를 사용한다면 동적인 목록을 만들 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>---
+type: concept
+created: 2026-07-27
+updated: 2026-07-27
+source-count: 3
+tags:
+  - llm
+  - knowledge-base---</pre></div>
+<p>Dataview를 통해 다음과 같은 목록을 자동 생성할 수 있습니다.</p>
+<ul><li>최근 갱신된 페이지</li><li>출처가 부족한 개념</li><li>특정 태그의 문서</li><li>자료 개수별 개념 목록</li></ul>
+<p>원문에서는 Web Clipper, 로컬 이미지 저장, 그래프 뷰, Marp, Dataview 등을 선택적 도구로 제안합니다.</p>
+<hr>
+<h3 id="s1-h52">Git으로 관리하기</h3>
+<p>LLM Wiki는 Markdown 파일로 이루어져 있으므로 Git 저장소로 관리할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>git initgit add .git commit-m&quot;Initialize LLM wiki&quot;</pre></div>
+<p>Git을 사용하면 다음 이점이 있습니다.</p>
+<ul><li>변경 이력 확인</li><li>잘못된 Wiki 수정 복구</li><li>브랜치 실험</li><li>여러 사람과 협업</li><li>Schema 변경 추적</li><li>특정 시점의 지식 상태 확인</li></ul>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>Wiki
+= 지식 코드베이스
+
+Git commit
+= 특정 시점의 지식 상태 저장</pre></div>
+<p>원문도 Wiki를 Markdown 파일로 구성된 Git 저장소로 볼 수 있으며, 이를 통해 버전 관리와 협업을 활용할 수 있다고 설명합니다.</p>
+<hr>
+<h3 id="s1-h53">검색 도구는 언제 필요한가?</h3>
+<p>처음부터 복잡한 벡터 데이터베이스나 RAG 시스템을 만들 필요는 없습니다.</p>
+<p>작은 Wiki에서는 다음 흐름으로도 충분할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>index.md 확인
+→ 관련 페이지 선택
+→ Markdown 검색
+→ 필요한 문서 읽기</pre></div>
+<p>Wiki가 커진 뒤에 검색 도구를 추가하면 됩니다.</p>
+<p>카파시는 로컬 Markdown 검색 도구인 <code>qmd</code>를 예로 들며, BM25·벡터 검색·LLM 재정렬을 함께 활용할 수 있다고 소개합니다. CLI와 MCP 방식 모두 가능하지만 이는 선택 사항입니다.</p>
+<h4 id="s1-h54">규모별 접근</h4>
+<div class="table-wrap"><table><thead><tr><th>규모</th><th>권장 탐색 방법</th></tr></thead><tbody><tr><td>소규모</td><td>폴더, 내부 링크, <code>index.md</code></td></tr><tr><td>중규모</td><td>파일명 검색, 전문 검색, Obsidian</td></tr><tr><td>대규모</td><td>로컬 검색엔진, BM25, 벡터 검색, 재정렬</td></tr></tbody></table></div>
+<blockquote class="quote">도구는 필요가 생긴 뒤 추가합니다.<div class="note-kids"><p>처음부터 인프라를 크게 만드는 것이 LLM Wiki의 핵심은 아닙니다.</p></div></blockquote>
+<hr>
+<h3 id="s1-h55">실습 : 뉴트리원 업무 지식베이스용 LLM Wiki 시작하기</h3>
+<p>LLM Wiki는 우리가 만들고 받은 자료를 단순히 저장하는 폴더가 아닙니다.</p>
+<p>제품 기획서, 원료 자료, 고객문의 내역, 오픈마켓 리뷰, 회의록과 같은 업무 자료를 LLM이 읽고 정리하여, 서로 연결된 Markdown Wiki로 지속적으로 발전시키는 업무 지식 관리 시스템입니다.</p>
+<p>일반적인 문서 검색 방식에서는 질문할 때마다 LLM이 관련 자료를 다시 찾고 조합해야 합니다. 반면 LLM Wiki에서는 이미 정리된 원료·제품 개념, 담당 조직, 자료, 주제, 질문과 통찰이 Wiki에 누적됩니다.</p>
+<p>새로운 자료가 들어오면 LLM은 단순히 요약문 하나를 추가하는 데 그치지 않습니다.</p>
+<ul><li>기존 개념 페이지를 갱신합니다.</li><li>관련된 제품과 담당 조직 페이지를 연결합니다.</li><li>이전 판단과 충돌하는 내용을 표시합니다.</li><li>여러 자료에서 반복되는 패턴을 종합합니다.</li><li>새롭게 생긴 질문과 확인할 과제를 기록합니다.</li></ul>
+<p>업무용 LLM Wiki의 목적은 모든 자료를 완벽하게 보관하는 것이 아니라, 시간이 지날수록 팀이 반복해서 쓰는 판단 근거가 구조화된 지식 체계로 남도록 돕는 것입니다.</p>
+<h3 id="s1-h56">최소 WIKI 구성</h3>
+<p>LLM Wiki는 고정된 구현 규격이 아닙니다.</p>
+<p>어떤 자료를 관리할지, 어떤 LLM 도구를 사용할지, 얼마나 세밀하게 정리할지에 따라 구조를 다르게 만들 수 있습니다.</p>
+<p>처음부터 복잡한 분류 체계나 검색 시스템을 만들 필요는 없습니다. 업무 지식 관리에서는 다음 정도의 최소 구조로 시작할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>nutrione-llm-wiki/
+├─ CLAUDE.md
+├─ raw/
+│  └─ README.md
+└─ wiki/
+   ├─ index.md
+   └─ log.md</pre></div>
+<p>각 계층의 역할은 다음과 같습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>raw/
+= 내가 수집한 업무 원본 자료
+
+wiki/
+= LLM이 원본 자료를 바탕으로 작성하고 관리하는 지식 페이지
+
+CLAUDE.md
+= LLM이 자료를 처리하고 Wiki를 관리하는 방법을 정의한 Schema</pre></div>
+<h3 id="s1-h57"><code>raw/README.md</code></h3>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># Raw Sources
+
+이 폴더에는 뉴트리원 업무 지식베이스를 위해 수집한 원본 자료를 저장한다.
+
+예:
+
+- 제품 기획서와 상세페이지 원고
+- 원료·기능성 관련 자료와 논문 요약
+- 고객문의(VOC) 내역과 오픈마켓 리뷰
+- 주간회의록과 월간보고서
+- 경쟁 브랜드 상세페이지 분석
+- 표시·광고 심의 및 사내 규정 문서
+- 채널·MD 미팅 기록
+- 캔페인 실행 기록과 회고
+
+운영 원칙:
+
+- LLM은 이 폴더의 파일을 읽을 수 있다.
+- LLM은 원본 파일을 수정하거나 덮어쓰지 않는다.
+- 원본의 제목, 작성 부서, 출처, 수집일을 가능한 한 기록한다.
+- 사내에서 작성한 기록과 외부 자료를 구분한다.
+- 불확실한 출처는 불확실하다고 표시한다.</pre></div>
+<p>Raw Sources는 업무 지식베이스의 근거 자료입니다.</p>
+<p>LLM이 작성한 Wiki 페이지에 오류가 있거나 해석이 의심스러울 경우, 언제든지 Raw Sources로 돌아가 원래 내용을 확인할 수 있어야 합니다.</p>
+<h3 id="s1-h58"><code>wiki/index.md</code></h3>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># Nutrione Wiki Index
+
+이 문서는 뉴트리원 업무 Wiki에 등록된 페이지를 안내한다.
+
+## Overview
+
+아직 작성된 개요 페이지가 없다.
+
+## Concepts
+
+아직 등록된 원료·기능성 개념 페이지가 없다.
+
+## Products
+
+아직 등록된 제품·브랜드 페이지가 없다.
+
+## Sources
+
+아직 등록된 자료 페이지가 없다.
+
+## Questions
+
+아직 등록된 탐구 질문이 없다.</pre></div>
+<p><code>index.md</code>는 단순한 파일 목록이 아닙니다.</p>
+<p>Wiki에 어떤 지식이 축적되어 있는지 빠르게 파악할 수 있도록 각 페이지의 링크와 한 줄 설명을 관리하는 문서입니다.</p>
+<p>예를 들어 Wiki가 성장하면 다음처럼 구성할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>## Concepts
+
+- [[concepts/루테인]]
+  - 눈 건강 기능성 원료의 근거와 표시 가능 범위를 정리한 페이지
+- [[concepts/표시광고-규정]]
+  - 기능성 문구 작성 시 지켜야 할 기준을 종합한 페이지
+
+## Products
+
+- [[products/루테인-제품]]
+  - 제품 구성, 소구 포인트, 주요 문의 사항 정리
+- [[products/오메가5-제품]]
+  - 제품 구성, 소구 포인트, 주요 문의 사항 정리
+
+## Sources
+
+- [[sources/루테인-제품기획서]]
+  - 제품 기획 배경과 타겟, 핵심 소구점을 담은 사내 문서</pre></div>
+<h3 id="s1-h59"><code>wiki/log.md</code></h3>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># Nutrione Wiki Log
+
+업무 Wiki에서 수행한 Ingest, Query, Lint 작업을 시간순으로 기록한다.
+
+## 기록 형식
+
+## [YYYY-MM-DD] ingest | 자료 제목
+
+- 처리한 원본:
+- 생성한 페이지:
+- 갱신한 페이지:
+- 주요 변화:
+- 후속 질문:
+
+## [YYYY-MM-DD] query | 질문
+
+- 질문:
+- 확인한 페이지:
+- 새롭게 얻은 통찰:
+- Wiki 저장 여부:
+
+## [YYYY-MM-DD] lint | 점검 범위
+
+- 발견한 문제:
+- 수정한 내용:
+- 추가 조사가 필요한 내용:</pre></div>
+<p><code>log.md</code>는 Wiki가 어떻게 발전했는지 보여주는 작업 기록입니다.</p>
+<p>업무 지식 관리에서는 특히 다음 내용을 확인하는 데 유용합니다.</p>
+<ul><li>최근 어떤 자료를 반영했는가</li><li>어떤 문의나 이슈가 반복되고 있는가</li><li>어떤 판단이 새롭게 바뀌었는가</li><li>어떤 질문을 계속 확인하고 있는가</li><li>최근 Wiki의 어느 영역이 많이 성장했는가</li></ul>
+<h3 id="s1-h60">개인 지식 관리용 최소 Schema 예시</h3>
+<p>다음 내용은 클로드코드 사용시 <code>CLAUDE.md</code>, 코덱스 사용시 <code>AGENTS.md</code>에 넣을 수 있는 최소 Schema 예시입니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># Personal LLM Wiki Schema
+
+## 목적
+
+이 저장소는 내가 수집한 책, 기사, 강의, 메모, 일기와
+프로젝트 기록을 LLM이 구조화된 Markdown Wiki로 정리하고
+지속적으로 갱신하기 위한 개인 지식 관리 시스템이다.
+
+이 Wiki의 목적은 자료를 단순히 요약하는 것이 아니다.
+
+- 서로 다른 자료 사이의 연결을 찾는다.
+- 반복되는 개념과 관심사를 발견한다.
+- 나의 생각이 어떻게 변하는지 기록한다.
+- 기존 주장과 새로운 정보의 충돌을 표시한다.
+- 재사용할 가치가 있는 분석과 통찰을 축적한다.
+
+## 계층
+
+### Raw Sources
+
+- 위치: `raw/`
+- 사용자가 직접 자료를 추가한다.
+- 책 메모, 기사, 강의 노트, 일기, 아이디어 등을 포함할 수 있다.
+- LLM은 읽기만 한다.
+- LLM은 원본을 수정하거나 삭제하지 않는다.
+- 원본은 Wiki 내용의 근거 자료로 사용한다.
+
+### Wiki
+
+- 위치: `wiki/`
+- LLM이 생성하고 유지한다.
+- 자료별 요약뿐 아니라 개념, 인물, 질문, 비교, 종합 페이지를 작성한다.
+- 페이지 간 내부 링크를 적극적으로 사용한다.
+- 주요 주장에는 관련 원본을 표시한다.
+- 새로운 자료가 들어오면 기존 페이지도 함께 갱신한다.
+
+### Schema
+
+- 위치: `CLAUDE.md` or `AGENTS.md`
+- Wiki의 구조와 운영 원칙을 정의한다.
+- Ingest, Query, Lint 작업 방식을 정의한다.
+- 사용하면서 발견한 개선 사항을 지속적으로 반영한다.
+
+## 기본 페이지 유형
+
+필요한 경우 다음 페이지 유형을 사용한다.
+
+- `sources/`: 책, 기사, 강의, 영상 등 개별 자료
+- `concepts/`: 반복해서 등장하는 핵심 개념
+- `people/`: 저자, 연구자, 사상가, 주요 인물
+- `questions/`: 장기간 탐구할 질문
+- `comparisons/`: 서로 다른 주장과 관점의 비교
+- `reflections/`: 사용자의 생각, 변화, 회고
+- `synthesis/`: 여러 자료를 종합한 분석
+
+페이지 유형은 필요할 때만 추가한다.
+
+## 필수 문서
+
+- `wiki/index.md`
+  - 전체 페이지 목록
+  - 각 페이지의 한 줄 설명
+  - 주제별 분류
+
+- `wiki/log.md`
+  - Ingest, Query, Lint 작업 기록
+  - Wiki의 주요 변화
+  - 새롭게 생긴 질문
+
+## Ingest
+
+새 자료를 처리할 때:
+
+1. 원본 전체를 읽는다.
+2. 자료의 목적과 핵심 주장을 파악한다.
+3. 중요한 근거, 사례, 개념을 추출한다.
+4. 자료 요약 페이지를 생성한다.
+5. 관련 개념, 인물, 질문 페이지를 생성하거나 갱신한다.
+6. 기존 Wiki 내용과 일치하거나 충돌하는 부분을 확인한다.
+7. 사용자의 기존 생각과 연결되는 부분이 있으면 표시한다.
+8. 페이지 사이의 내부 링크를 추가한다.
+9. `index.md`를 갱신한다.
+10. `log.md`에 작업 내용을 기록한다.
+
+자료에 없는 내용을 사실처럼 추가하지 않는다.
+
+LLM의 추론이 포함될 경우 다음과 같이 구분한다.
+
+- 원본에 직접 제시된 내용
+- 여러 자료를 종합한 해석
+- LLM이 제안한 가설
+- 사용자가 추가로 검토해야 할 질문
+
+## Query
+
+질문에 답할 때:
+
+1. `index.md`를 먼저 읽는다.
+2. 질문과 관련된 Wiki 페이지를 찾는다.
+3. 관련 개념, 자료, 인물, 질문 페이지를 함께 확인한다.
+4. Wiki만으로 근거가 부족한 경우 Raw Sources를 확인한다.
+5. 사실, 해석, 추론을 구분하여 답한다.
+6. 관련 원본과 Wiki 페이지를 표시한다.
+7. 재사용 가치가 있는 결과인지 판단한다.
+8. 가치가 있다면 새 Wiki 페이지로 저장하거나 기존 페이지를 갱신한다.
+
+모든 질문을 Wiki에 저장하지 않는다.
+
+다음과 같은 결과를 우선적으로 저장한다.
+
+- 여러 자료를 종합한 분석
+- 반복해서 참고할 설명
+- 중요한 비교
+- 기존 생각을 수정하는 발견
+- 장기적으로 탐구할 질문
+- 새로운 연결과 패턴
+
+## Lint
+
+정기적으로 다음을 확인한다.
+
+- 서로 모순되는 주장
+- 새로운 자료에 의해 오래된 정보가 된 내용
+- 원본 출처가 없는 주장
+- 연결되지 않은 고립 페이지
+- 본문에서 반복되지만 별도 페이지가 없는 중요 개념
+- 같은 내용을 다루는 중복 페이지
+- 잘못 연결된 인물이나 개념
+- 사용자의 생각과 외부 자료가 구분되지 않은 부분
+- 추가 조사가 필요한 질문
+- 최근 갱신되지 않은 핵심 페이지
+
+문제를 발견하면 바로 대규모로 수정하지 않는다.
+
+먼저 다음 내용을 사용자에게 보여준다.
+
+1. 발견한 문제
+2. 수정이 필요한 이유
+3. 영향을 받는 페이지
+4. 제안하는 수정 계획</pre></div>
+<hr>
+<h3 id="s1-h61">처음 사용하는 사람을 위한 운영 순서</h3>
+<h4 id="s1-h62">1단계: 관리할 지식 영역 정하기</h4>
+<p>처음부터 삶의 모든 자료를 하나의 Wiki에 넣을 필요는 없습니다.</p>
+<p>먼저 장기간 관심을 가지고 탐구할 한 가지 영역을 선택합니다.</p>
+<p>처음 시작하기 좋은 기준은 다음과 같습니다.</p>
+<ul><li>앞으로도 자료가 계속 추가될 주제</li><li>여러 책이나 글을 함께 비교할 주제</li><li>반복해서 질문하게 되는 주제</li><li>나의 생각이 시간에 따라 달라질 수 있는 주제</li></ul>
+<p>예를 들어 다음과 같이 목적을 정할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>생산성, 집중력, 습관 형성에 관한 책과 글을 정리하고,
+서로 다른 저자들의 주장을 비교하며,
+나에게 실제로 효과가 있었던 방법을 기록한다.</pre></div>
+<hr>
+<h4 id="s1-h63">2단계: Raw Sources 추가하기</h4>
+<p>처음에는 3~5개 정도의 자료로 시작합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>raw/
+├─ books/
+│  ├─ 아주-작은-습관의-힘.md
+│  └─ 딥워크.md
+├─ articles/
+│  └─ 스마트폰과-주의력.md
+└─ personal/
+   ├─ 나의-집중력-문제.md
+   └─ 지난달-습관-회고.md</pre></div>
+<p>자료에는 가능한 한 기본 정보를 함께 기록합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>---
+title: 아주 작은 습관의 힘
+author: 제임스 클리어
+type: book-note
+collected: 2026-07-27
+---
+
+# 아주 작은 습관의 힘
+
+여기에 책을 읽으며 작성한 메모를 기록한다.</pre></div>
+<p>외부 자료와 개인 기록을 구분하는 것이 좋습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>외부 자료
+= 책, 기사, 논문, 강의 등
+
+개인 자료
+= 일기, 회고, 아이디어, 실험 결과, 경험 기록</pre></div>
+<p>이 둘을 구분하면 나중에 다음 질문에 더 정확하게 답할 수 있습니다.</p>
+<ul><li>어떤 내용이 저자의 주장인가</li><li>어떤 내용이 나의 생각인가</li><li>어떤 내용이 실제 경험을 통해 확인되었는가</li><li>어떤 내용이 아직 검증되지 않은 가설인가</li></ul>
+<hr>
+<h4 id="s1-h64">3단계: 첫 Ingest 실행하기</h4>
+<p>첫 번째 자료는 한 번에 하나씩 처리하는 것이 좋습니다.</p>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 예시 프롬프트:</span><button class="copy" type="button">복사</button></div><pre>CLAUDE.md를 먼저 읽어줘.
+
+raw/books/아주-작은-습관의-힘.md를
+개인 지식 관리 Wiki에 Ingest해줘.
+
+다음 원칙을 지켜줘.
+
+1. 원본 파일은 수정하지 않는다.
+2. 자료의 핵심 주장과 근거를 구분한다.
+3. wiki/sources/에 자료 요약 페이지를 작성한다.
+4. 필요한 개념 페이지를 생성한다.
+5. 기존 Wiki 페이지와 연결되는 내용이 있으면 갱신한다.
+6. 원본에 없는 해석은 사실처럼 작성하지 않는다.
+7. LLM의 해석이나 추론은 별도로 표시한다.
+8. index.md와 log.md를 갱신한다.
+9. 추가로 탐구할 질문을 제안한다.</pre></div>
+<p>첫 Ingest 이후에는 다음과 같은 페이지가 만들어질 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>wiki/
+├─ index.md
+├─ log.md
+├─ sources/
+│  └─ 아주-작은-습관의-힘.md
+├─ concepts/
+│  ├─ 습관-형성.md
+│  ├─ 정체성-기반-습관.md
+│  └─ 환경-설계.md
+└─ questions/
+   └─ 작은-행동은-언제-습관이-되는가.md</pre></div>
+<p>한 자료가 여러 Wiki 페이지를 갱신하는 것은 정상입니다.</p>
+<p>자료 요약 페이지 하나만 만드는 것이 아니라, 기존 지식 구조 전체에 새로운 내용을 통합하는 것이 LLM Wiki의 핵심입니다.</p>
+<hr>
+<h4 id="s1-h65">4단계: 두 번째 자료 연결하기</h4>
+<p>두 번째 자료를 추가할 때는 첫 자료와 어떤 관계가 있는지 확인하도록 요청합니다.</p>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 예시 프롬프트:</span><button class="copy" type="button">복사</button></div><pre>raw/books/딥워크.md를 Ingest해줘.
+
+기존 Wiki의 다음 내용을 함께 확인해줘.
+
+- 습관 형성과 연결되는 부분
+- 집중력을 방해하는 환경 요인
+- 반복 훈련과 정체성의 관계
+- 기존 주장과 충돌하는 부분
+
+새 자료 요약만 작성하지 말고,
+관련 개념 페이지와 질문 페이지도 갱신해줘.
+
+수정한 페이지 목록과 수정 이유를 마지막에 보여줘.</pre></div>
+<p>이 과정을 통해 개별 자료들이 독립적인 요약문으로 남지 않고 서로 연결되기 시작합니다.</p>
+<p>예:</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>[[습관-형성]]
+→ 반복 행동이 자동화되는 과정
+
+[[딥워크]]
+→ 집중 능력을 훈련하는 방법
+
+[[환경-설계]]
+→ 습관과 집중을 방해하거나 촉진하는 조건
+
+[[디지털-산만함]]
+→ 스마트폰과 알림이 집중에 미치는 영향</pre></div>
+<hr>
+<h4 id="s1-h66">5단계: Wiki 탐색하기</h4>
+<p>자료가 몇 개 쌓이면 Wiki를 대상으로 질문할 수 있습니다.</p>
+<h5 id="s1-h67">핵심 개념 확인</h5>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 요청문</span><button class="copy" type="button">복사</button></div><pre>현재 개인 Wiki에서 가장 중요한 개념 5개를 설명해줘.
+
+각 개념에 대해 다음을 포함해줘.
+
+- 개념의 정의
+- 관련 자료
+- 다른 개념과의 연결
+- 아직 해결되지 않은 질문</pre></div>
+<h5 id="s1-h68">자료 간 비교</h5>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 요청문</span><button class="copy" type="button">복사</button></div><pre>제임스 클리어와 칼 뉴포트의 주장을 비교해줘.
+
+다음 기준으로 정리해줘.
+
+- 행동 변화의 출발점
+- 환경의 역할
+- 반복과 훈련의 역할
+- 실천 방법
+- 서로 보완되는 부분
+- 충돌하거나 강조점이 다른 부분</pre></div>
+<h5 id="s1-h69">개인 기록과 외부 자료 연결</h5>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 요청문</span><button class="copy" type="button">복사</button></div><pre>내가 작성한 집중력 회고와
+현재 Wiki의 집중 관련 개념을 비교해줘.
+
+다음을 구분해줘.
+
+- 내 경험과 자료가 일치하는 부분
+- 내 경험과 자료가 다른 부분
+- 아직 판단하기 어려운 부분
+- 다음 달에 실험해볼 행동</pre></div>
+<h5 id="s1-h70">생각의 변화 확인</h5>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 요청문</span><button class="copy" type="button">복사</button></div><pre>지금까지의 log.md와 reflection 페이지를 바탕으로
+내가 습관 형성에 대해 생각하는 방식이
+어떻게 변했는지 설명해줘.
+
+변화가 확인되는 근거 페이지도 함께 표시해줘.</pre></div>
+<hr>
+<h4 id="s1-h71">6단계: 좋은 결과를 Wiki에 저장하기</h4>
+<p>질문에 대한 모든 답변을 Wiki에 저장할 필요는 없습니다.</p>
+<p>여러 자료를 종합한 비교나, 앞으로 반복해서 참고할 분석은 Wiki에 저장할 가치가 있습니다.</p>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 예시 프롬프트:</span><button class="copy" type="button">복사</button></div><pre>방금 만든 습관 형성과 딥워크의 비교 분석은
+앞으로 다시 참고할 가치가 있다.
+
+wiki/comparisons/습관-형성과-딥워크.md로 저장해줘.
+
+다음을 함께 처리해줘.
+
+1. 관련 개념 페이지에 링크를 추가한다.
+2. 관련 자료 페이지에 역링크를 추가한다.
+3. index.md를 갱신한다.
+4. log.md에 Query 결과 저장을 기록한다.
+5. 근거 자료와 LLM의 해석을 구분한다.</pre></div>
+<p>저장하기 좋은 결과는 다음과 같습니다.</p>
+<ul><li>여러 책의 주장 비교</li><li>여러 자료를 종합한 개념 설명</li><li>개인 경험과 외부 연구의 비교</li><li>반복해서 사용할 체크리스트</li><li>장기간 탐구할 질문</li><li>기존 생각이 바뀐 이유</li><li>프로젝트의 주요 의사결정</li><li>서로 떨어져 있던 주제 사이의 새로운 연결</li></ul>
+<p>저장하지 않아도 되는 결과는 다음과 같습니다.</p>
+<ul><li>파일 위치 확인</li><li>단순한 날짜 계산</li><li>일회성 형식 변환</li><li>이미 Wiki에 있는 내용의 단순 반복</li><li>다시 사용할 가능성이 낮은 짧은 질문</li><li>근거가 부족한 임시 아이디어</li></ul>
+<hr>
+<h4 id="s1-h72">7단계: 개인적인 통찰 기록하기</h4>
+<p>개인 지식 관리에서는 외부 자료뿐 아니라 나의 생각과 경험도 중요한 자료입니다.</p>
+<p>다만 개인적인 경험을 일반적인 사실처럼 기록하지 않도록 구분해야 합니다.</p>
+<p><code>raw/personal/</code>과 같은 경로에 다음과같이 저장해서 사용할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># 아침 집중 시간 실험
+
+## 기간
+
+2026-07-01부터 2026-07-14까지
+
+## 시도한 방법
+
+오전 8시부터 10시까지 스마트폰을 다른 방에 두고
+글쓰기 작업만 수행했다.
+
+## 관찰
+
+- 첫 3일은 스마트폰을 확인하고 싶은 충동이 강했다.
+- 4일 이후에는 작업 시작 시간이 짧아졌다.
+- 오후보다 오전에 긴 글을 작성하기 쉬웠다.
+
+## 나의 해석
+
+스마트폰을 물리적으로 분리하는 것이
+집중 시작에 도움을 준 것으로 보인다.
+
+## 주의
+
+이 결과는 개인 경험이며 일반화할 수 없다.
+
+## 관련 페이지
+
+- [[concepts/환경-설계]]
+- [[concepts/디지털-산만함]]
+- [[concepts/딥워크]]</pre></div>
+<p>개인 경험을 기록할 때는 다음을 구분하는 것이 좋습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>관찰
+= 실제로 일어난 일
+
+해석
+= 그 일이 일어난 이유에 대한 나의 판단
+
+가설
+= 아직 검증되지 않은 설명
+
+다음 행동
+= 이후에 시험해볼 방법</pre></div>
+<hr>
+<h4 id="s1-h73">8단계: 주기적으로 Lint 실행하기</h4>
+<p>Wiki가 커지면 페이지 수만 늘어나는 것이 아니라 오류와 불일치도 함께 늘어날 수 있습니다.</p>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 예시 프롬프트:</span><button class="copy" type="button">복사</button></div><pre>전체 개인 Wiki를 Lint해줘.
+
+다음 항목을 확인해줘.
+
+- 서로 모순되는 주장
+- 오래된 정보
+- 고립된 페이지
+- 누락된 내부 링크
+- 중복 페이지
+- 출처가 부족한 주장
+- 개인 경험과 일반 사실이 섞인 부분
+- 같은 인물을 다른 이름으로 만든 페이지
+- 본문에서 자주 등장하지만 독립 페이지가 없는 개념
+- 추가 조사가 필요한 질문
+- 최근 자료가 기존 종합 페이지에 반영되지 않은 부분
+
+바로 수정하지 말고 먼저 변경 계획을 보여줘.
+
+각 문제에 대해 다음을 포함해줘.
+
+1. 문제가 있는 페이지
+2. 문제의 내용
+3. 수정이 필요한 이유
+4. 제안하는 수정 방법
+5. 영향을 받는 다른 페이지</pre></div>
+<p>변경 계획을 확인한 뒤 다음과 같이 요청할 수 있습니다.</p>
+<div class="prompt"><div class="prompt-head"><span class="prompt-tag">✍️ 요청문</span><button class="copy" type="button">복사</button></div><pre>제안한 변경 계획 중 다음 항목만 적용해줘.
+
+- 중복된 집중력 페이지 통합
+- 오래된 스마트폰 사용 통계 표시
+- 습관 형성 페이지에 딥워크 링크 추가
+
+원본 자료는 수정하지 말고,
+변경한 내용을 log.md에 기록해줘.</pre></div>
+<hr>
+<h3 id="s1-h74">자동화 수준 선택하기</h3>
+<p>개인 지식 관리용 LLM Wiki에도 하나의 정답은 없습니다.</p>
+<p>사용자가 자료를 얼마나 깊게 읽고 싶은지, LLM의 판단을 얼마나 검토하고 싶은지에 따라 운영 방식을 선택할 수 있습니다.</p>
+<h4 id="s1-h75">사람 참여가 많은 방식</h4>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>자료 1개 추가
+→ LLM과 핵심 내용 논의
+→ Wiki 변경 계획 확인
+→ 페이지별 수정 내용 검토
+→ Wiki 반영
+→ 후속 질문 작성</pre></div>
+<p>이 방식은 독서, 연구, 자기 이해처럼 자료를 깊이 탐구할 때 적합합니다.</p>
+<p>장점:</p>
+<ul><li>자료의 의미를 깊이 이해할 수 있습니다.</li><li>어떤 내용을 강조할지 직접 결정할 수 있습니다.</li><li>개인적인 관심사와 연결하기 쉽습니다.</li><li>잘못된 종합을 빠르게 발견할 수 있습니다.</li><li>Wiki 구조를 사용하면서 세밀하게 개선할 수 있습니다.</li></ul>
+<p>단점:</p>
+<ul><li>자료 처리 속도가 느립니다.</li><li>사용자가 지속적으로 참여해야 합니다.</li><li>많은 자료를 한꺼번에 처리하기 어렵습니다.</li></ul>
+<hr>
+<h4 id="s1-h76">자동화가 많은 방식</h4>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>자료 여러 개 추가
+→ 일괄 Ingest
+→ 자료 페이지 자동 생성
+→ 관련 개념 페이지 자동 갱신
+→ 결과 사후 검토</pre></div>
+<p>이 방식은 뉴스 기사, 회의 기록, 반복되는 강의 자료처럼 자료의 양이 많을 때 사용할 수 있습니다.</p>
+<p>장점:</p>
+<ul><li>많은 자료를 빠르게 처리할 수 있습니다.</li><li>반복적인 분류와 링크 작업이 줄어듭니다.</li><li>여러 자료에서 공통 주제를 빠르게 찾을 수 있습니다.</li></ul>
+<p>단점:</p>
+<ul><li>잘못된 분류가 여러 페이지로 확산될 수 있습니다.</li><li>중요하지 않은 내용이 과도하게 구조화될 수 있습니다.</li><li>개인의 관심사와 다른 방향으로 Wiki가 성장할 수 있습니다.</li><li>비슷하지만 다른 개념을 하나로 합칠 수 있습니다.</li><li>자료의 미묘한 맥락을 놓칠 수 있습니다.</li></ul>
+<p>처음에는 자료를 한 번에 하나씩 Ingest하면서 Schema를 다듬는 방식이 좋습니다.</p>
+<p>몇 번의 Ingest를 거치면서 다음 항목을 구체화할 수 있습니다.</p>
+<ul><li>어떤 페이지 유형이 필요한가</li><li>어떤 내용은 저장하지 않을 것인가</li><li>출처를 어떻게 표시할 것인가</li><li>개인 생각과 외부 자료를 어떻게 구분할 것인가</li><li>LLM이 어느 범위까지 자동 수정할 수 있는가</li><li>어떤 변경은 반드시 사람의 승인을 받아야 하는가</li></ul>
+<hr>
+<h3 id="s1-h77">개인 지식 관리용 LLM Wiki 사용 시 주의할 점</h3>
+<h4 id="s1-h78">1. Wiki는 원본이 아니다</h4>
+<p>LLM이 작성한 Wiki는 원본 자료를 구조화하고 종합한 결과입니다.</p>
+<p>따라서 해석 오류, 누락, 과도한 일반화가 포함될 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>Raw Sources
+= 책, 기사, 강의, 메모와 같은 원본 근거
+
+Wiki
+= LLM이 원본을 정리하고 연결한 지식 구조</pre></div>
+<p>중요한 주장이나 의사결정에 사용되는 내용은 Raw Sources에서 다시 확인할 수 있어야 합니다.</p>
+<hr>
+<h4 id="s1-h79">2. 외부 자료와 개인 생각을 구분한다</h4>
+<p>개인 지식 Wiki에는 다음 내용이 함께 들어갈 수 있습니다.</p>
+<ul><li>저자의 주장</li><li>연구 결과</li><li>LLM의 종합</li><li>나의 경험</li><li>나의 해석</li><li>아직 검증하지 않은 가설</li></ul>
+<p>이들을 구분하지 않으면 나중에 어떤 내용이 사실이고 어떤 내용이 개인적인 판단인지 알기 어렵습니다.</p>
+<p>예:</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>## 원본의 주장
+
+환경을 바꾸면 원하는 행동을 시작하기 쉬워질 수 있다.
+
+## 나의 경험
+
+휴대전화를 다른 방에 두었을 때
+오전 글쓰기 시간이 늘어났다.
+
+## 나의 해석
+
+물리적 거리가 집중 시작에 영향을 준 것으로 보인다.
+
+## 검토 필요
+
+다른 요인도 영향을 주었을 가능성이 있으므로
+반복 실험이 필요하다.</pre></div>
+<hr>
+<h4 id="s1-h80">3. 출처 연결이 필요하다</h4>
+<p>Wiki 페이지에 근거가 없으면 시간이 지난 뒤 내용을 검증하기 어렵습니다.</p>
+<p>예:</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre># 습관 형성
+
+## 핵심 주장
+
+습관 형성에서는 목표보다
+반복 가능한 행동과 환경 설계가 중요할 수 있다.
+
+## 관련 자료
+
+- [[sources/아주-작은-습관의-힘]]
+- [[sources/습관에-관한-강의-노트]]
+
+## 개인 기록
+
+- [[reflections/아침-루틴-실험]]</pre></div>
+<p>Wiki 내부 링크만으로는 원본의 어느 부분을 근거로 했는지 부족할 수 있습니다.</p>
+<p>필요한 경우 페이지 안에 다음 정보를 추가합니다.</p>
+<ul><li>원본 파일 경로</li><li>장 또는 페이지</li><li>문단 또는 시간 정보</li><li>직접 인용과 요약의 구분</li><li>수집 날짜</li></ul>
+<hr>
+<h4 id="s1-h81">4. LLM이 원본을 수정하지 않도록 한다</h4>
+<p>Raw Sources의 불변성은 개인 지식 관리에서도 중요합니다.</p>
+<p>원본이 수정되면 다음 문제가 생길 수 있습니다.</p>
+<ul><li>저자의 실제 주장과 LLM의 수정 내용이 섞임</li><li>과거에 내가 작성한 생각이 현재 관점으로 덮어써짐</li><li>Wiki의 근거를 다시 확인하기 어려워짐</li><li>해석이 변한 과정을 추적할 수 없음</li></ul>
+<p>잘못된 내용이 발견되면 Raw Sources를 수정하기보다 Wiki 페이지에서 다음과 같이 처리합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>## 정정
+
+이 페이지의 이전 설명은 원본의 의미를 지나치게 확대했다.
+
+## 수정된 설명
+
+원본은 모든 상황에 적용되는 일반 법칙을 주장한 것이 아니라,
+특정 조건에서 나타날 수 있는 경향을 설명한다.</pre></div>
+<hr>
+<h4 id="s1-h82">5. 자동 생성 페이지가 항상 정확한 것은 아니다</h4>
+<p>LLM은 다음과 같은 실수를 할 수 있습니다.</p>
+<ul><li>서로 다른 개념을 같은 것으로 합침</li><li>비슷한 인물을 하나의 인물로 잘못 연결함</li><li>출처에 없는 내용을 추론하여 추가함</li><li>오래된 정보를 현재 사실처럼 유지함</li><li>같은 개념의 중복 페이지를 생성함</li><li>링크는 연결했지만 관계를 잘못 설명함</li><li>개인적인 경험을 일반적인 사실처럼 표현함</li><li>한 저자의 주장을 다른 저자의 주장으로 잘못 표시함</li><li>과거의 생각과 현재의 생각을 구분하지 않음</li></ul>
+<p>따라서 Ingest와 Lint는 단순한 부가 기능이 아니라 Wiki를 신뢰할 수 있게 유지하는 핵심 절차입니다.</p>
+<hr>
+<h4 id="s1-h83">6. 모든 질문을 Wiki에 저장하지 않는다</h4>
+<p>대화 기록을 모두 저장하면 Wiki가 빠르게 복잡해질 수 있습니다.</p>
+<p>저장 여부는 다음 질문으로 판단할 수 있습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>이 결과를 한 달 뒤에도 다시 참고할 가능성이 있는가?
+
+여러 자료를 연결한 새로운 내용인가?
+
+기존 Wiki의 이해를 바꾸는가?
+
+다른 질문에 다시 활용할 수 있는가?
+
+장기간 추적할 가치가 있는가?</pre></div>
+<p>저장하기 좋은 것:</p>
+<ul><li>중요한 개념 비교</li><li>여러 자료를 종합한 분석</li><li>반복해서 참고할 설명</li><li>나의 생각이 변화한 과정</li><li>실제로 수행한 실험과 결과</li><li>새로운 개념 정의</li><li>기존 지식을 수정하는 발견</li><li>장기간 추적할 질문</li><li>프로젝트에서 반복해서 사용할 원칙</li></ul>
+<p>저장하지 않아도 되는 것:</p>
+<ul><li>단순 확인 질문</li><li>일회성 계산</li><li>잠깐 필요한 번역</li><li>형식만 바꾸는 작업</li><li>이미 존재하는 내용의 반복</li><li>근거가 없는 즉흥적 추측</li><li>다시 참고할 가능성이 낮은 답변</li></ul>
+<hr>
+<h4 id="s1-h84">7. 개인 자료의 민감성을 고려한다</h4>
+<p>개인 지식 Wiki에는 건강, 감정, 관계, 업무, 재정과 같은 민감한 내용이 들어갈 수 있습니다.</p>
+<p>자료를 추가하기 전에 다음을 확인합니다.</p>
+<ul><li>외부 LLM 서비스에 전송해도 되는 자료인가</li><li>타인의 개인정보가 포함되어 있는가</li><li>회사나 조직의 기밀 정보가 포함되어 있는가</li><li>건강이나 재정 관련 기록을 별도로 관리해야 하는가</li><li>공개 저장소에 올려도 되는 내용인가</li><li>Git 기록에 남겨도 되는 정보인가</li></ul>
+<p>필요한 경우 다음과 같이 자료를 분리합니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>personal-llm-wiki/
+├─ raw-public/
+├─ raw-private/
+├─ wiki-public/
+└─ wiki-private/</pre></div>
+<p>또는 민감한 영역은 별도의 Wiki로 관리할 수 있습니다.</p>
+<hr>
+<h4 id="s1-h85">8. 처음부터 거대한 구조를 만들지 않는다</h4>
+<p>처음부터 다음과 같은 구조를 모두 만들 필요는 없습니다.</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>concepts/
+people/
+books/
+articles/
+questions/
+reflections/
+projects/
+comparisons/
+synthesis/
+timelines/
+experiments/</pre></div>
+<p>초기에는 실제로 필요한 페이지 유형만 사용합니다.</p>
+<p>예:</p>
+<div class="codebox"><div class="code-head"><button class="copy" type="button">복사</button></div><pre>wiki/
+├─ index.md
+├─ log.md
+├─ sources/
+└─ concepts/</pre></div>
+<p>사용하면서 비교 분석이 많아지면 <code>comparisons/</code>를 추가하고, 개인 실험을 기록하게 되면 <code>reflections/</code> 또는 <code>experiments/</code>를 추가합니다.</p>
+<p>구조는 자료보다 먼저 완성되는 것이 아니라, 자료와 질문이 쌓이면서 함께 발전해야 합니다.</p></div><div class="session-foot"><span>📚 LLM Wiki는 처음부터 크게 만들 필요가 없습니다. 작은 영역 하나로 시작해 Ingest → Query → Lint를 반복하세요.</span></div></section>
+
+  <p class="footer">출처: <a href="https://teamsparta.notion.site/AI-38d2dc3ef5148152af96ca7963f741f0" target="_blank" rel="noopener">[뉴트리원] AI 마스터클래스 교육자료(Notion)</a> · 교안 PDF와 실습 파일은 원본 페이지에서 내려받을 수 있습니다.</p>
+</div>
+</main>
+</div>
+<script>
+(function () {
+  var STORE = 'ai-masterclass-참고 자료';
+  function load() { try { return JSON.parse(localStorage.getItem(STORE) || '{}'); } catch (e) { return {}; } }
+  function save(s) { try { localStorage.setItem(STORE, JSON.stringify(s)); } catch (e) {} }
+  var state = load();
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"][data-key]'));
+  function updateProgress() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    var pct = boxes.length ? Math.round(done / boxes.length * 100) : 0;
+    document.getElementById('progBar').style.width = pct + '%';
+    document.getElementById('progTxt').innerHTML = pct + '%<span class="cnt"> (' + done + '/' + boxes.length + ')</span>';
+  }
+  boxes.forEach(function (b) {
+    b.checked = !!state[b.dataset.key];
+    b.addEventListener('change', function () { state[b.dataset.key] = b.checked; save(state); updateProgress(); });
+  });
+  updateProgress();
+
+  // 복사 버튼
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.closest('.prompt, .codebox').querySelector('pre').innerText;
+      function ok() { btn.textContent = '복사됨 ✓'; btn.classList.add('done');
+        setTimeout(function () { btn.textContent = '복사'; btn.classList.remove('done'); }, 1500); }
+      if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(ok, fallback); } else { fallback(); }
+      function fallback() { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+        try { document.execCommand('copy'); ok(); } catch (e) {} document.body.removeChild(t); }
+    });
+  });
+
+  // 테마
+  var themeKey = 'ai-masterclass-theme';
+  try { var th = localStorage.getItem(themeKey); if (th) document.documentElement.dataset.theme = th; } catch (e) {}
+  document.getElementById('themeBtn').addEventListener('click', function () {
+    var cur = document.documentElement.dataset.theme ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem(themeKey, next); } catch (e) {}
+  });
+
+  // 모바일 메뉴
+  document.getElementById('menuBtn').addEventListener('click', function () { document.body.classList.toggle('nav-open'); });
+  document.querySelectorAll('.sidebar a').forEach(function (a) {
+    a.addEventListener('click', function () { document.body.classList.remove('nav-open'); });
+  });
+
+  // 현재 위치 표시
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a[href^="#"]'));
+  var targets = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  function spy() {
+    var y = window.scrollY + 140, idx = -1;
+    targets.forEach(function (t, i) { if (t && t.offsetTop <= y) idx = i; });
+    links.forEach(function (a) { a.classList.remove('active'); });
+    document.querySelectorAll('.nav-group').forEach(function (g) { g.classList.remove('open'); });
+    if (idx >= 0) {
+      var a = links[idx]; a.classList.add('active');
+      var g = a.closest('.nav-group'); if (g) g.classList.add('open');
+      if (a.classList.contains('nav-sub')) { var top = g.querySelector('.nav-top'); if (top) top.classList.add('active'); }
+    }
+  }
+  window.addEventListener('scroll', function () { window.requestAnimationFrame(spy); }, { passive: true });
+  spy();
+})();
+</script>
+</body>
+</html>
