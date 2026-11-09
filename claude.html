@@ -207,6 +207,14 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
 .md-view .md-h2 { font-size: 16px; font-weight: 700; margin: 10px 0 2px; }
 .md-view ul, .md-view ol { margin: 2px 0; padding-left: 1.3em; color: var(--text); }
 
+/* 마치며 */
+.closing { margin-top: 20px; padding: 24px 28px; border-radius: var(--radius); background: var(--accent-soft); border-left: 4px solid var(--accent); }
+.closing h2 { margin: 0 0 12px; font-size: clamp(22px, 2.6vw, 26px); line-height: 1.35; color: var(--accent-text); }
+.closing p { margin: 10px 0; }
+.closing ul { margin: 12px 0 0; padding-left: 1.3em; }
+.closing li { margin: 6px 0; font-weight: 600; }
+@media (max-width: 960px) { .closing { padding: 20px 18px; } }
+
 .loop { display: block; width: 100%; max-width: 560px; height: auto; margin: 10px auto; }
 .footer { margin-top: 80px; font-size: 13px; color: var(--text-3); }
 
@@ -273,7 +281,7 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
     <div class="grid-2" style="margin:0">
       <div class="box"><div class="k">PART 01</div><h4>Claude 이해하기</h4><p>대표 AI 서비스, Claude 모델 종류, 웹과 데스크톱, 주요 기능, 토큰과 컨텍스트</p></div>
       <div class="box"><div class="k">PART 02</div><h4>챗봇에서 에이전트로</h4><p>Claude Chat과 Claude Code에 같은 일을 시켜보며 보는 챗봇과 에이전트의 차이</p></div>
-      <div class="box"><div class="k">PART 03</div><h4>Claude Code 기본기</h4><p>Code 탭 화면, 작업 폴더, 권한 모드, 계획 모드, 세션 관리</p></div>
+      <div class="box"><div class="k">PART 03</div><h4>Claude Code 기본기</h4><p>Code 탭 화면, 작업 폴더, 권한 모드, 계획 모드, 세션 관리, 사이드 채팅·분할 보기, 리모트 컨트롤, 아티팩트, Mods</p></div>
       <div class="box"><div class="k">PART 04</div><h4>CLAUDE.md</h4><p>마크다운(.md) 파일의 개념, 같은 방식으로 반복하게 만드는 폴더별 업무지시서</p></div>
       <div class="box"><div class="k">PART 05</div><h4>커넥터와 MCP</h4><p>메일, 메신저, 일정, 웹 화면 같은 외부 도구 연결</p></div>
       <div class="box"><div class="k">PART 06</div><h4>Agent Skills</h4><p>반복 업무 절차를 저장해두고 필요할 때 꺼내 쓰기</p></div>
@@ -342,7 +350,7 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
   <div class="grid-3">
     <div class="box"><div class="k">SEARCH</div><h4>웹 검색 · 리서치</h4><p>최신 정보를 웹에서 찾고, 여러 출처를 조사해 출처가 달린 내용으로 정리해요.</p></div>
     <div class="box"><div class="k">FILES</div><h4>파일 · 이미지 읽기</h4><p>PDF, 엑셀, 문서, 캡처 이미지를 읽고 요약하고 비교해요.</p></div>
-    <div class="box"><div class="k">ARTIFACTS</div><h4>아티팩트</h4><p>문서, 표, HTML, 간단한 앱 같은 결과물을 별도 창에 만들고 고쳐요.</p></div>
+    <div class="box"><div class="k">ARTIFACTS</div><h4>아티팩트</h4><p>문서, 슬라이드, 디자인, 대시보드 같은 결과물을 별도 창에 만들고 고쳐요. (PART 03)</p></div>
     <div class="box"><div class="k">INSTRUCTIONS</div><h4>지침 저장</h4><p>일하는 기준을 저장해두고 매번 다시 설명하지 않아요. (PART 04)</p></div>
     <div class="box"><div class="k">CONNECTORS</div><h4>커넥터</h4><p>Gmail, Drive, Calendar 같은 업무 도구를 연결해요. (PART 05)</p></div>
     <div class="box"><div class="k">SKILLS</div><h4>Skills</h4><p>반복 업무 절차를 저장해두고 필요할 때 불러와요. (PART 06)</p></div>
@@ -579,7 +587,7 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
   <div class="part-head">
     <span class="badge">PART 03</span>
     <h2>Claude Code 기본기</h2>
-    <p class="part-desc">Desktop 앱의 Code 탭을 기준으로 화면 구성, 작업 폴더, 권한 모드, 계획 모드, 자주 쓰는 입력 방법, 세션 관리를 정리합니다.</p>
+    <p class="part-desc">Desktop 앱의 Code 탭을 기준으로 화면 구성, 작업 폴더, 권한 모드, 계획 모드, 자주 쓰는 입력 방법, 세션 관리를 정리하고, 사이드 채팅·분할 보기·리모트 컨트롤·아티팩트·Mods처럼 작업을 편하게 해주는 기능을 소개합니다.</p>
   </div>
 
   <h3 id="p4-what">Claude Code는 코드만 쓰는 도구가 아니에요</h3>
@@ -626,24 +634,13 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
   <div class="table-wrap"><table>
     <tr><th>번호</th><th>위치</th><th>하는 일</th></tr>
     <tr><td>①</td><td>사이드바</td><td><b>+ 새 세션</b>으로 새 작업 시작(<kbd>Ctrl</kbd>+<kbd>N</kbd>). 지난 세션을 눌러 이어서 작업. 아래 <b>사용자 지정</b>에서 Skill·커넥터 관리</td></tr>
-    <tr><td>②</td><td>프로젝트 폴더 (입력창 아래 왼쪽)</td><td>Claude가 일할 <b>작업 폴더</b>를 고름. 첫 메시지를 보내기 전에 정함</td></tr>
+    <tr><td>②</td><td>프로젝트 폴더 (입력창 아래 왼쪽)</td><td>Claude가 일할 <b>작업 폴더</b>를 고름. 첫 메시지를 보내기 전에 정하고, 폴더 이름이 맞는지 확인. 다른 폴더도 함께 봐야 하면 ⑥ <b>+ 버튼 &gt; 폴더 추가</b></td></tr>
     <tr><td>③</td><td>권한 모드 (입력창 아래 오른쪽)</td><td>Claude가 어디까지 묻지 않고 할지 정함 (자동, 수동, 편집 자동 수락, 계획)</td></tr>
     <tr><td>④</td><td>모델 선택 (입력창 아래 오른쪽)</td><td>모델과 생각의 깊이(effort)를 고름. 작업 중에도 바꿀 수 있음</td></tr>
-    <tr><td>⑤</td><td>컨텍스트 (오른쪽 패널)</td><td>이 대화가 얼마나 찼는지(%)와 대화·도구·Skill 등이 각각 얼마나 차지하는지 보여줌</td></tr>
+    <tr><td>⑤</td><td>컨텍스트 (오른쪽 패널)</td><td>이 대화가 얼마나 찼는지(%)와 대화·도구·Skill 등이 각각 얼마나 차지하는지 보여줌. 위쪽 <b>환경</b>에서는 작업 폴더를 확인하고 리모트 컨트롤을 켬</td></tr>
     <tr><td>⑥</td><td>+ 버튼</td><td>파일·사진 첨부, 폴더 추가, 커넥터 추가, 슬래시 명령 목록</td></tr>
   </table></div>
   <p class="muted">※ 메뉴 이름과 위치는 앱 버전에 따라 조금 다를 수 있어요.</p>
-
-  <h3 id="p4-folder">작업 폴더는 AI가 앉는 책상입니다</h3>
-  <p>Code 탭에서는 첫 질문보다 <b>어느 폴더에서 일할지</b>가 먼저예요. 입력창 아래 왼쪽 <b>프로젝트 폴더</b>(②)에서 고릅니다. 책상 위에 올린 자료는 읽고 분류할 수 있지만, 책상 밖 자료는 작업 맥락에 들어오지 않아요.</p>
-  <div class="table-wrap"><table>
-    <tr><th>구분</th><th>내용</th></tr>
-    <tr><td>허용</td><td>선택한 폴더 안의 파일 읽기, 폴더 생성, 파일 만들기·이동·수정</td></tr>
-    <tr><td>주의</td><td>폴더 밖 실제 업무 자료는 열지 않기. 필요하면 사본을 폴더 안에 넣기</td></tr>
-    <tr><td>확인 기준</td><td>보내기 전에 입력창 아래 폴더 이름이 작업하려는 폴더와 같은지 확인</td></tr>
-    <tr><td>폴더 추가</td><td>다른 폴더도 함께 봐야 하면 <b>+ 버튼 &gt; 폴더 추가</b>로 이번 세션에 추가</td></tr>
-  </table></div>
-  <div class="note warn"><span class="note-k">⚠️ 주의</span><div>익숙해지기 전에는 실습·사본 전용 폴더만 여세요. 고객 정보나 민감 데이터가 든 폴더는 작업 폴더로 지정하지 않습니다.</div></div>
 
   <h3 id="p4-tools">Claude가 폴더 안에서 하는 일</h3>
   <p>작업 폴더 안에서 Claude는 아래 다섯 가지를 직접 할 수 있어요. 작업 중에는 대화 화면에 <b>지금 어떤 파일을 읽고 고치는지</b>가 한 줄씩 표시되고, 누르면 자세한 내용을 펼쳐볼 수 있습니다.</p>
@@ -666,7 +663,6 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
     <tr><td class="nowrap">편집 자동 수락</td><td>모든 파일 편집을 자동으로 수락. 파일 수정, 폴더 만들기·옮기기 같은 기본 파일 작업은 묻지 않음</td><td>결과를 보면서 빠르게 고쳐나갈 때</td></tr>
     <tr><td class="nowrap">계획</td><td>변경하기 전에 계획 세우기. 읽고 조사만 하고, 계획을 승인해야 수정 시작</td><td>바꾸기 전에 계획부터 검토하고 싶을 때</td></tr>
   </table></div>
-  <div class="note warn"><span class="note-k">⚠️ 주의</span><div>회사 자료는 <b>수동이나 계획</b> 모드로 시작하세요. 편한 모드일수록 결과 검토를 더 꼼꼼히 해야 합니다. 메뉴 맨 아래 <b>권한 무시</b>(모든 확인 생략)는 업무 PC에서 쓰지 않아요.</div></div>
 
   <h3 id="p4-plan">계획 모드: 실행 전에 계획부터 받기</h3>
   <p>계획 모드에서 Claude는 파일을 읽고 조사만 합니다. 무엇을 어떤 순서로 바꿀지 <b>계획서</b>를 먼저 내놓고, 사람이 승인해야 실제 작업을 시작해요.</p>
@@ -699,6 +695,76 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
     <tr><td>얼마나 찼는지 궁금하다</td><td>화면 오른쪽 패널의 <b>컨텍스트</b>(⑤) 확인. 가득 차면 Claude가 앞부분을 자동으로 요약함</td></tr>
   </table></div>
   <div class="note key"><span class="note-k">📌 핵심</span><div>긴 대화 하나보다 <b>짧은 대화 여러 개 + CLAUDE.md</b>가 결과가 더 안정적이에요. 꼭 기억해야 할 기준은 대화가 아니라 파일에 남깁니다.</div></div>
+
+  <h3 id="p4-side">사이드 채팅: 작업을 멈추지 않고 따로 물어보기</h3>
+  <p>Claude가 한창 일하는 중에 궁금한 게 생기면, 메인 대화에 끼어들기가 애매하죠. 대화 화면 오른쪽 위 <b>⋯ 메뉴 &gt; 사이드 채팅</b>을 누르면 오른쪽에 별도 대화창이 열려요. 사이드 채팅은 지금 하는 작업을 알고 답하지만, 여기서 나눈 이야기는 <b>메인 작업에 섞이지 않습니다.</b></p>
+  <div class="table-wrap"><table>
+    <tr><th>구분</th><th>메인 대화</th><th>사이드 채팅</th></tr>
+    <tr><td>용도</td><td>작업 지시, 결과물 만들기</td><td>용어·개념 질문, 짧은 확인</td></tr>
+    <tr><td>작업에 주는 영향</td><td>있음</td><td>없음</td></tr>
+    <tr><td>예</td><td>"상세페이지 리뉴얼 시안 3개 만들어줘"</td><td>"방금 말한 '그리드 시스템'이 정확히 뭐야?"</td></tr>
+  </table></div>
+  <div class="note tip"><span class="note-k">💡 TIP</span><div>지금 작업과 상관없는 새 일은 사이드 채팅이 아니라 <b>+ 새 세션</b>으로 시작하세요.</div></div>
+
+  <h3 id="p4-split">분할 보기: 두 세션을 한 화면에 나란히</h3>
+  <p>세션 두 개를 번갈아 눌러가며 볼 필요가 없어요. 사이드바에서 세션의 <b>⋯ 메뉴(또는 마우스 오른쪽 클릭) &gt; 다음에서 열기 &gt; 분할 보기</b>를 누르면 화면이 반으로 나뉘어, 두 세션을 동시에 보면서 작업할 수 있습니다. 세션을 원하는 위치로 끌어다 놓아도 돼요.</p>
+  <div class="grid-3">
+    <div class="box"><div class="k">예시 1</div><h4>보면서 지시하기</h4><p>왼쪽에 레퍼런스 정리 세션을 띄워두고, 오른쪽 시안 작업 세션에 지시</p></div>
+    <div class="box"><div class="k">예시 2</div><h4>버전 비교</h4><p>국문 배너 세션과 영문 배너 세션을 나란히 놓고 톤 맞추기</p></div>
+    <div class="box"><div class="k">예시 3</div><h4>결과 함께 보기</h4><p>시안 작업 세션과 검수 세션을 같이 열어 수정 요청과 결과를 한 번에 확인</p></div>
+  </div>
+
+  <h3 id="p4-remote">리모트 컨트롤: 휴대폰·다른 PC에서 작업 이어가기</h3>
+  <p>화면 오른쪽 패널의 <b>환경</b>에서 <b>리모트 컨트롤</b>을 켜면, <b>휴대폰 Claude 앱</b>이나 <b>다른 PC의 웹 브라우저</b>에서 같은 세션을 열어 진행 상황을 보고 지시를 이어갈 수 있어요. 긴 작업을 걸어두고 회의에 들어가거나, 회의실·집 노트북에서 이어서 확인할 때 쓰기 좋습니다.</p>
+  <div class="flow"><span class="s">내 PC에서 작업 시작</span><span class="a">→</span><span class="s">환경 &gt; 리모트 컨트롤 켜기</span><span class="a">→</span><span class="s blue">휴대폰 앱 · 다른 PC에서<br><small>확인·지시</small></span><span class="a">→</span><span class="s dark">작업은 내 PC에서 계속</span></div>
+  <div class="table-wrap"><table>
+    <tr><th>어디서</th><th>이렇게 열어요</th></tr>
+    <tr><td>휴대폰</td><td>Claude 앱에 로그인해 세션 목록에서 해당 세션 열기</td></tr>
+    <tr><td>다른 PC</td><td>웹 브라우저로 <code>claude.ai/code</code>에 접속해 세션 목록에서 해당 세션 열기. 그 PC에 프로그램을 설치하거나 작업 파일을 옮길 필요 없음</td></tr>
+  </table></div>
+  <div class="table-wrap"><table>
+    <tr><th>확인할 것</th><th>내용</th></tr>
+    <tr><td>내 PC는 켜두기</td><td>실제 작업은 내 PC에서 돌아가요. PC가 꺼지거나 절전 모드에 들어가면 작업도 멈춤</td></tr>
+    <tr><td>같은 계정</td><td>휴대폰 앱과 다른 PC의 브라우저도 내 PC와 같은 계정으로 로그인</td></tr>
+    <tr><td>다른 기기는 리모컨</td><td>휴대폰이나 다른 PC에서 보내는 지시도 내 PC의 작업 폴더와 권한 모드 기준으로 실행됨</td></tr>
+  </table></div>
+  <div class="note warn"><span class="note-k">⚠️ 주의</span><div>공용 PC에서 열었다면 작업이 끝난 뒤 꼭 로그아웃하세요.</div></div>
+
+  <h3 id="p4-artifact">아티팩트: 문서·슬라이드·디자인 만들기</h3>
+  <p>사이드바의 <b>아티팩트</b>에서는 바로 쓸 수 있는 결과물을 만들 수 있어요. 유형을 고르고 만들 내용을 말하면, Claude가 화면에서 실시간으로 채워 갑니다. 만든 결과물은 처음에는 <b>나만 볼 수 있는 비공개 페이지</b>이고, 필요하면 링크로 공유해요.</p>
+  <div class="grid-4">
+    <div class="box"><div class="k">DOCUMENT</div><h4>문서</h4><p>안내문, 기획서, 회의록. 글꼴·크기·색을 화면에서 바로 조정</p></div>
+    <div class="box"><div class="k">SLIDES</div><h4>슬라이드</h4><p>발표 자료. 글보다 시각 자료 중심으로 구성하고 PPTX·PDF로 내려받기</p></div>
+    <div class="box hl"><div class="k">DESIGN</div><h4>디자인</h4><p>카드뉴스, 배너, 화면 시안 같은 시각 디자인</p></div>
+    <div class="box"><div class="k">DASHBOARD</div><h4>대시보드</h4><p>숫자 데이터를 표·차트로 한 화면에 정리</p></div>
+  </div>
+  <div class="prompt"><div class="prompt-head">✍️ 요청 예시 (디자인)</div><pre>인스타그램에 올릴 카드뉴스 8장을 만들어줘.
+주제는 '가을 신제품 출시 안내'이고, 보는 사람은 20~30대 직장인이야.
+브랜드 컬러는 #D9612B, 문장은 장당 두 줄 이내로 써줘.</pre></div>
+  <div class="table-wrap"><table>
+    <tr><th>다듬는 법</th><th>내용</th></tr>
+    <tr><td>부분 수정</td><td>고칠 부분을 드래그로 골라 "이 부분만 더 짧게 바꿔줘"처럼 그 부분만 요청</td></tr>
+    <tr><td>직접 수정</td><td>글꼴, 크기, 색상은 화면에서 직접 바꿀 수 있음</td></tr>
+    <tr><td>디자인 시스템</td><td>브랜드 컬러·폰트·로고를 디자인 시스템으로 만들어두면 슬라이드와 디자인에 같은 스타일을 계속 적용</td></tr>
+    <tr><td>내려받기·공유</td><td>슬라이드는 PPTX·PDF로 내려받기. 다른 사람에게는 링크로 공유</td></tr>
+  </table></div>
+  <div class="note tip"><span class="note-k">💡 TIP</span><div>아티팩트는 <b>시안과 초안을 빠르게 뽑는 데</b> 강해요. 방향을 여러 개 받아보고 고른 다음, 최종 원본은 평소 쓰던 디자인 툴에서 마무리하세요.</div></div>
+
+  <h3 id="p4-mods">Mods: Claude 화면에 내 기능 붙이기</h3>
+  <p>Mods는 Claude 앱 화면에 <b>내가 원하는 기능을 직접 만들어 붙이는 기능</b>이에요. 대화 옆에 계속 떠 있는 패널, 작업 알림, 나만의 슬래시 명령 같은 것을 말로 요청해서 만들 수 있어요. 코딩을 몰라도 "이런 패널 만들어줘"라고 하면 됩니다.</p>
+  <p>기능을 붙이는 것뿐 아니라 <b>Claude 화면 자체를 내 입맛대로 바꿀 수도 있어요.</b> 입력창 위에 정보 띠를 띄우거나, 화면 아래 상태 표시줄에 원하는 정보를 계속 보이게 하는 식입니다.</p>
+  <div class="flow"><span class="s">만들 기능 설명</span><span class="a">→</span><span class="s">Claude가 Mod 제작</span><span class="a">→</span><span class="s">켤지 묻는 창에서 켜기</span><span class="a">→</span><span class="s dark">Claude 화면에 표시</span></div>
+  <div class="grid-2">
+    <div class="box"><div class="k">예시 1</div><h4>납품 전 체크리스트</h4><p>해상도, 파일명 규칙, 폰트 아웃라인, 브랜드 컬러를 하나씩 체크하며 기록하는 패널</p></div>
+    <div class="box"><div class="k">예시 2</div><h4>작업 알림 펫</h4><p>작업 중에는 일하는 모습, 끝나면 "끝났어!" 하고 알려주는 캐릭터</p></div>
+    <div class="box"><div class="k">예시 3</div><h4>프롬프트 캐싱 타이머</h4><p>캐싱 시간(60분)이 얼마나 남았는지 화면에 계속 보여주는 표시</p></div>
+    <div class="box"><div class="k">예시 4</div><h4>실시간 사용량 표시</h4><p>지금 대화와 요금제 사용량이 얼마나 찼는지 실시간으로 보여주는 상태 표시줄</p></div>
+  </div>
+  <div class="prompt"><div class="prompt-head">✍️ 요청 예시</div><pre>납품 전에 확인할 체크리스트 Mod를 만들어줘.
+항목은 해상도, 파일명 규칙, 폰트 아웃라인, 브랜드 컬러 네 가지야.
+오른쪽 패널에 띄우고, 항목마다 체크 버튼을 달아줘.</pre></div>
+  <p>만든 뒤에도 "'이미지 저작권 확인' 항목도 추가해줘"처럼 말로 계속 고칠 수 있어요.</p>
+  <div class="note warn"><span class="note-k">⚠️ 주의</span><div>남이 만든 Mod는 Skill과 마찬가지로 <b>켜기 전에 무엇을 하는지 확인</b>하세요.</div></div>
 </section>
 
 <!-- ================= PART 04 ================= -->
@@ -1049,7 +1115,7 @@ report-writing/
   <div class="table-wrap"><table>
     <tr><th>구성 요소</th><th>역할</th><th>담당하는 것</th></tr>
     <tr><td>채팅 프롬프트</td><td>이번 목표</td><td>이번 한 번 무엇을 할지</td></tr>
-    <tr><td>작업 폴더</td><td>책상</td><td>Code 탭이 읽고 쓰는 범위</td></tr>
+    <tr><td>작업 폴더</td><td>작업 범위</td><td>Code 탭이 읽고 쓰는 범위</td></tr>
     <tr><td>CLAUDE.md</td><td>기준</td><td>이 폴더에서 계속 지킬 업무 기준. 말투, 저장 규칙, 보안 원칙</td></tr>
     <tr><td>커넥터 (MCP)</td><td>통로</td><td>Slack, Gmail, Calendar 같은 외부 서비스 접근</td></tr>
     <tr><td>Claude in Chrome</td><td>화면</td><td>사람이 보는 브라우저 화면을 작업 대상으로</td></tr>
@@ -1067,6 +1133,11 @@ report-writing/
     <tr><td>여러 파일을 바꾸기 전, 방향부터 맞추고 싶을 때</td><td>계획 모드</td></tr>
     <tr><td>Claude가 파일을 잘못 고쳤을 때</td><td>"방금 바꾼 ○○ 파일의 △△ 부분을 원래대로 돌려줘"처럼 틀린 부분만 콕 집어 요청</td></tr>
     <tr><td>대화가 길어지고 느려졌을 때</td><td><code>/compact</code> 또는 + 새 세션 + CLAUDE.md</td></tr>
+    <tr><td>작업 중에 궁금한 게 생겼을 때</td><td>사이드 채팅</td></tr>
+    <tr><td>두 작업을 나란히 보며 진행할 때</td><td>분할 보기</td></tr>
+    <tr><td>자리를 비워도 작업을 확인하고 싶을 때</td><td>리모트 컨트롤 + 휴대폰 Claude 앱 · 다른 PC 브라우저</td></tr>
+    <tr><td>카드뉴스·슬라이드·문서 초안이 필요할 때</td><td>아티팩트</td></tr>
+    <tr><td>매번 쓰는 체크리스트를 화면에 띄워두고 싶을 때</td><td>Mods</td></tr>
   </table></div>
 
   <h3 id="p8-cheat">한눈에 보는 치트시트</h3>
@@ -1085,7 +1156,8 @@ report-writing/
       <h4>Code 탭 화면</h4>
       <ul>
         <li><b>입력창 아래</b>: 왼쪽 폴더, 오른쪽 권한 모드 · 모델</li>
-        <li><b>오른쪽 패널</b>: 컨텍스트 사용량</li>
+        <li><b>오른쪽 패널</b>: 컨텍스트 사용량 · 환경(리모트 컨트롤)</li>
+        <li><b>⋯ 메뉴</b>: 사이드 채팅 · 분할 보기</li>
         <li><b>+ 버튼</b>: 파일 첨부 · 폴더 추가 · 커넥터 · 슬래시 명령</li>
         <li><b>사용자 지정</b>: Skill · 커넥터 관리</li>
         <li><code>/init</code> CLAUDE.md 초안 · <code>/compact</code> 대화 요약</li>
@@ -1112,9 +1184,13 @@ report-writing/
     <tr><td>토큰</td><td>AI가 글을 처리하는 단위. 사용량 계산 기준</td></tr>
     <tr><td>컨텍스트</td><td>AI가 지금 대화에서 참고하는 정보 전체</td></tr>
     <tr><td>프롬프트 캐싱</td><td>앞 대화를 읽고 계산한 결과를 서버에 잠시 보관해 토큰을 아끼는 기능(보관된 결과는 캐시). 기억이 아니라 속도·비용만 달라짐. 마지막 메시지 후 60분 동안 쉬면 사라짐</td></tr>
-    <tr><td>작업 폴더</td><td>Code 탭이 읽고 쓰는 범위. AI의 책상</td></tr>
+    <tr><td>작업 폴더</td><td>Code 탭이 읽고 쓰는 범위</td></tr>
     <tr><td>권한 모드</td><td>어떤 행동을 묻지 않고 할지 정하는 설정</td></tr>
     <tr><td>계획 모드</td><td>읽고 계획만 세우고, 승인 후 실행하는 모드</td></tr>
+    <tr><td>사이드 채팅</td><td>작업 중에 따로 질문하는 옆 대화창. 메인 작업에 섞이지 않음</td></tr>
+    <tr><td>분할 보기</td><td>세션 두 개를 한 화면에 나란히 띄우는 기능</td></tr>
+    <tr><td>리모트 컨트롤</td><td>내 PC에서 돌아가는 세션을 휴대폰 Claude 앱이나 다른 PC의 브라우저로 이어서 보고 지시하는 기능</td></tr>
+    <tr><td>Mods</td><td>Claude 앱 화면에 직접 만들어 붙이거나 화면을 바꾸는 기능. 패널, 알림, 슬래시 명령, 상태 표시줄 등</td></tr>
     <tr><td>마크다운 (.md)</td><td>글자와 간단한 기호(#, - 등)로 제목·목록을 표시하는 텍스트 파일</td></tr>
     <tr><td>CLAUDE.md</td><td>폴더마다 두는 업무지시서. 대화 시작 시 자동으로 읽음</td></tr>
     <tr><td>MCP</td><td>AI와 외부 도구를 잇는 표준 규격</td></tr>
@@ -1123,13 +1199,19 @@ report-writing/
   </table></div>
 
   <h3 id="p8-end">마무리</h3>
-  <div class="note key"><span class="note-k">📌 핵심</span><div>챗봇에게는 답을 요청하고, 에이전트에게는 <b>목표와 확인 기준이 있는 일</b>을 맡깁니다.</div></div>
   <div class="grid-3">
     <div class="box"><h4>기준은 파일에</h4><p>대화는 흘러가고, 기준은 CLAUDE.md와 Skill에 남습니다.</p></div>
     <div class="box"><h4>도구는 필요한 만큼</h4><p>필요한 커넥터만, 승인한 범위만 연결합니다.</p></div>
     <div class="box"><h4>마지막 확인은 사람이</h4><p>되돌릴 수 없는 행동과 최종 결과는 사람이 확인합니다.</p></div>
   </div>
-  <p>다음 단계로 회차별 교안의 실습에서 직접 손에 익혀보세요.</p>
+  <div class="closing">
+    <p>이 자료에 담긴 내용은 2026년 11월 기준입니다. AI 도구는 빠르게 바뀌기 때문에, 지금 배운 메뉴와 방법이 몇 달 뒤에는 없어지거나 또 다른 기능이 새로 나올 수도 있습니다.</p>
+    <p>따라서 AI를 업무에 많이 적용하고 본격적으로 도입하고 싶다고 생각하신다면, 기능 하나하나를 외우는 것보다 자주 써보는 습관이 중요할 것 같습니다.</p>
+    <ul>
+      <li>새로 생긴 버튼이나 메뉴는 지나치지 말고 한 번 눌러봅니다</li>
+      <li>잘 모르는 기능은 Claude에게 "이 기능은 어떻게 쓰나요?"라고 물어봅니다</li>
+    </ul>
+  </div>
 </section>
 
 </div>
