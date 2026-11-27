@@ -118,6 +118,8 @@ table.vs th:nth-child(3) { color: var(--accent-text); }
 .box h4 { margin: 0 0 4px !important; font-size: 16.5px !important; }
 .box p { margin: 0; color: var(--text-2); }
 .box ul { margin: 6px 0 0; padding-left: 1.2em; color: var(--text-2); }
+.box ol { margin: 8px 0 0; padding-left: 1.3em; color: var(--text-2); }
+.box ol li { margin: 2px 0; }
 .box.hl { background: var(--accent-soft); border-color: transparent; }
 .box.hl h4 { color: var(--accent-text); }
 .box.blue { background: var(--tip-soft); border-color: transparent; }
@@ -299,7 +301,7 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
   </div>
 
   <h3 id="p1-ai">AI 서비스, 한눈에 보기</h3>
-  <p>요즘 업무에 많이 쓰는 대화형 AI는 대표적으로 세 가지예요. 모두 글을 읽고, 답하고, 문서를 만들어주는 비슷한 일을 하지만 만든 회사와 화면, 세부 기능이 조금씩 다릅니다. 이번 교육에서는 <b>Claude</b>를 씁니다.</p>
+  <p>요즘 업무에 많이 쓰는 생성형 AI는 대표적으로 세 가지예요. 모두 글을 읽고, 답하고, 문서를 만들어주는 비슷한 일을 하지만 만든 회사와 화면, 세부 기능이 조금씩 다릅니다. 이번 교육에서는 <b>Claude</b>를 씁니다.</p>
   <div class="grid-3">
     <div class="box hl"><div class="k">ANTHROPIC</div><h4>Claude</h4><p>Anthropic이 만든 AI 서비스. 대표 모델은 Claude Fable · Opus · Sonnet · Haiku</p></div>
     <div class="box"><div class="k">OPENAI</div><h4>ChatGPT</h4><p>OpenAI가 만든 AI 서비스. 대표 모델은 GPT 계열</p></div>
@@ -336,21 +338,21 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
   <p>Claude는 크기와 성격이 다른 여러 모델로 나뉩니다. 무조건 가장 큰 모델이 좋은 게 아니라, 일의 난이도와 속도에 맞춰 고르면 됩니다.</p>
   <div class="table-wrap"><table>
     <tr><th>등급</th><th>성격</th><th>잘 맞는 일</th><th>고려할 점</th></tr>
-    <tr><td>Fable</td><td>최상위 모델</td><td>아주 어려운 추론, 오래 걸리는 복잡한 에이전트 작업</td><td><b>별도 사용 요금 부과.</b> 대부분의 일은 Opus로 충분</td></tr>
+    <tr><td>Fable</td><td>최상위 모델</td><td>아주 어려운 추론, 오래 걸리는 복잡한 에이전트 작업</td><td><b>Ultra 요금제에만 포함, 그 외는 쓴 만큼 요금 부과.</b> 대부분의 일은 Opus로 충분</td></tr>
     <tr><td>Opus</td><td>강력한 상위 모델</td><td>복잡한 분석, 긴 작업, 어려운 판단, 대규모 코드 작업</td><td>느리고 사용량을 많이 씀</td></tr>
     <tr><td>Sonnet</td><td>성능과 속도의 균형</td><td>일상 업무 대부분: 문서 작성, 자료 정리, 일반 코딩</td><td>무난한 기본 선택</td></tr>
     <tr><td>Haiku</td><td>가장 빠르고 가벼움</td><td>단순 분류, 짧은 요약, 많은 양의 반복 처리</td><td>깊은 추론은 약함</td></tr>
   </table></div>
   <div class="note tip"><span class="note-k">💡 바꾸는 법</span><div>입력창 아래의 <b>모델 선택 메뉴</b>에서 바꿉니다. Code 탭에서는 같은 자리에서 <b>생각의 깊이(effort)</b>도 고를 수 있어요. 깊게 생각할수록 정확하지만 느려집니다.</div></div>
-  <div class="note warn"><span class="note-k">💰 Fable은 별도 요금</span><div>Fable은 요금제 기본 사용량에 포함되지 않고 <b>별도 사용 요금(추가 사용량)</b>이 부과돼요. Pro 요금제는 처음부터 별도 결제이고, Max 같은 상위 요금제도 정해진 한도를 넘으면 별도 요금이 붙습니다. 모델 메뉴에서 무심코 고르지 않도록 주의하세요.</div></div>
-  <p class="muted">※ 2026년 11월 기준으로는 Fable 5.1, Opus 5.5 · Sonnet 5.5 · Haiku 5.5가 최신이에요. 라인업과 요금 조건은 계속 바뀌니 모델 선택 메뉴와 요금제 안내에서 확인하세요.</p>
+  <div class="note warn"><div>Fable을 요금제 사용량 안에서 쓸 수 있는 건 최상위 요금제인 <b>Ultra</b>뿐이에요. Pro, Max 등 그 밖의 요금제에서는 <b>쓴 만큼 사용료(추가 사용량)가 따로 부과</b>되는 방식으로만 쓸 수 있습니다. 모델 메뉴에서 무심코 고르지 않도록 주의하세요.</div></div>
+  <p class="muted">※ 2026년 11월 기준으로는 Fable 5.2, Opus 5.5 · Sonnet 5.5 · Haiku 5.5가 최신이에요. 라인업과 요금 조건은 계속 바뀌니 모델 선택 메뉴와 요금제 안내에서 확인하세요.</p>
 
   <h3 id="p1-chat">Claude 주요 기능</h3>
   <p>Claude에는 이런 기능들이 있어요. 지금은 "이런 게 있구나" 정도로만 보고, 자세한 사용법은 뒤에서 하나씩 다룹니다.</p>
   <div class="grid-3">
     <div class="box"><div class="k">SEARCH</div><h4>웹 검색 · 리서치</h4><p>최신 정보를 웹에서 찾고, 여러 출처를 조사해 출처가 달린 내용으로 정리해요.</p></div>
     <div class="box"><div class="k">FILES</div><h4>파일 · 이미지 읽기</h4><p>PDF, 엑셀, 문서, 캡처 이미지를 읽고 요약하고 비교해요.</p></div>
-    <div class="box"><div class="k">ARTIFACTS</div><h4>아티팩트</h4><p>문서, 슬라이드, 디자인, 대시보드 같은 결과물을 별도 창에 만들고 고쳐요. (PART 03)</p></div>
+    <div class="box"><div class="k">ARTIFACTS</div><h4>아티팩트</h4><p>문서, 슬라이드, 디자인, 화이트보드, 시트, 데이터 같은 결과물을 별도 창에 만들고 고쳐요. (PART 03)</p></div>
     <div class="box"><div class="k">INSTRUCTIONS</div><h4>지침 저장</h4><p>일하는 기준을 저장해두고 매번 다시 설명하지 않아요. (PART 04)</p></div>
     <div class="box"><div class="k">CONNECTORS</div><h4>커넥터</h4><p>Gmail, Drive, Calendar 같은 업무 도구를 연결해요. (PART 05)</p></div>
     <div class="box"><div class="k">SKILLS</div><h4>Skills</h4><p>반복 업무 절차를 저장해두고 필요할 때 불러와요. (PART 06)</p></div>
@@ -365,7 +367,7 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
     <tr><th>컨텍스트를 아끼는 습관</th><th>이유</th></tr>
     <tr><td>큰 PDF는 필요한 구간만</td><td>799쪽 통계 PDF 전체보다 관련 20쪽이 더 빠르고 정확해요</td></tr>
     <tr><td>주제가 바뀌면 새 대화</td><td>지난 주제의 내용이 남아 판단을 흐립니다</td></tr>
-    <tr><td>오래 쉰 대화도 새 세션</td><td>캐시가 60분 뒤 사라져, 이어서 보내면 앞 대화 전체를 다시 읽느라 토큰을 많이 써요</td></tr>
+    <tr><td>오래 쉰 대화도 새 세션</td><td>캐시가 60분 뒤 사라지고 유휴 상태가 돼요. 이어서 보내면 앞 대화를 다시 읽거나 요약본으로 이어가서, 토큰을 더 쓰거나 세부 내용이 빠져요</td></tr>
     <tr><td>반복 기준은 파일로</td><td>매번 붙여넣지 말고 CLAUDE.md와 Skill에 저장해요</td></tr>
     <tr><td>컨텍스트 표시로 확인</td><td>Code 탭 오른쪽 패널의 <b>컨텍스트</b>에서 지금 대화가 얼마나 찼는지, 무엇이 자리를 차지하는지 볼 수 있어요</td></tr>
   </table></div>
@@ -374,15 +376,16 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
   <h3 id="p1-cache">프롬프트 캐싱: 이어서 하면 아끼고, 오래 쉬면 다시 써요</h3>
   <p>Claude는 메시지를 보낼 때마다 <b>앞의 대화 전체를 다시 읽고</b> 답해요. 매번 처음부터 읽으면 토큰이 많이 들기 때문에, 방금 읽고 계산한 결과를 서버에 잠시 보관해 두고 다음 메시지에서 꺼내 씁니다. 이 기능을 <b>프롬프트 캐싱(Prompt Caching)</b>, 보관된 결과를 <b>프롬프트 캐시</b>(줄여서 캐시)라고 불러요. 캐시에서 꺼내 읽는 양은 새로 읽는 것보다 훨씬 적게 계산돼요.</p>
   <div class="note key"><span class="note-k">📌 기억이 아니라 책갈피</span><div>내용을 외운 게 아니라 읽던 책에 끼워 둔 <b>책갈피</b>예요. 다시 펼치면 바로 이어 읽지만, 시간이 지나면 빠집니다. 60분 안에 이어서 보낸다고 <b>답변이 더 좋아지는 건 아니고, 토큰을 덜 쓸 뿐</b>이에요.</div></div>
-  <div class="flow"><span class="s">메시지 보냄</span><span class="a">→</span><span class="s">앞 대화는 캐시에서 꺼내 읽음</span><span class="a">→</span><span class="s">60분 타이머 다시 시작</span><span class="a">→</span><span class="s dark">60분간 아무것도 안 보내면 캐시 삭제</span></div>
+  <div class="flow"><span class="s">메시지 보냄</span><span class="a">→</span><span class="s">앞 대화는 캐시에서 꺼내 읽음</span><span class="a">→</span><span class="s">60분 타이머 다시 시작</span><span class="a">→</span><span class="s dark">60분간 아무것도 안 보내면 캐시 삭제, 유휴 상태로</span><span class="a">→</span><span class="s">다시 보내면 앞 대화를 요약해서 이어감</span></div>
   <div class="table-wrap"><table>
     <tr><th>상황</th><th>캐시는</th><th>토큰은</th></tr>
     <tr><td>대화를 계속 이어갈 때</td><td>보낼 때마다 60분 타이머가 다시 시작돼 유지</td><td>앞 내용은 캐시에서 꺼내 적게 씀</td></tr>
-    <tr><td><b>60분 넘게 아무것도 안 보냈을 때</b></td><td>사라짐</td><td>다음 메시지에서 앞 대화 전체를 다시 읽어 <b>처음처럼 다시 씀</b></td></tr>
+    <tr><td><b>60분 넘게 아무것도 안 보냈을 때</b></td><td>사라지고 대화는 <b>유휴 상태</b>로 넘어감</td><td>긴 대화는 쉬는 동안 앞 내용을 <b>요약</b>해 두고, 다시 보내면 원래 대화 대신 요약본을 읽고 이어감. 짧은 대화는 앞 대화 전체를 다시 읽어 처음처럼 다시 씀</td></tr>
     <tr><td>대화 중간에 모델을 바꿀 때</td><td>모델마다 캐시가 따로라 새로 만듦</td><td>바꾼 직후 한 번은 앞 대화 전체를 다시 읽음</td></tr>
   </table></div>
+  <div class="note key"><span class="note-k">📌 유휴 상태 요약은 원본이 아니에요</span><div>대화가 길면(약 20만 토큰 이상) 60분 넘게 쉬는 동안 Claude가 앞 내용을 <b>자동으로 요약</b>해 둡니다. 다시 메시지를 보내면 앞 대화 전체를 다시 읽는 대신 이 요약본을 바탕으로 이어가서 토큰은 덜 써요. 다만 요약하면서 <b>세부 지시, 숫자, 중간에 정한 기준이 빠질 수 있어요.</b> 쉬었다 돌아온 대화에서 Claude가 앞서 말한 조건을 잊은 것 같다면 이 때문입니다.</div></div>
   <div class="note warn"><span class="note-k">⏱️ 권장</span><div>마지막으로 보낸 뒤 시간이 오래 지난 대화는 이어 쓰지 말고 <b>무조건 새 세션</b>으로 열어서 하세요. 이어서 할 내용은 CLAUDE.md나 정리 파일에 남겨 두고, 새 세션에서 그 파일을 읽게 하면 됩니다. 모델도 대화 중간에 바꾸기보다 시작할 때 정해 두는 편이 좋아요.</div></div>
-  <p class="muted">※ Code 탭을 구독 요금제로 쓸 때 기준이에요. 유지 시간은 요금제와 사용 방식에 따라 달라질 수 있어요.</p>
+  <p class="muted">※ Code 탭을 구독 요금제로 쓸 때 기준이에요. 유지 시간은 요금제와 사용 방식에 따라 달라질 수 있고, 유휴 상태 요약은 Desktop Code 탭에서 동작해요.</p>
 </section>
 
 <!-- ================= PART 02 ================= -->
@@ -688,7 +691,7 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
   <div class="table-wrap"><table>
     <tr><th>상황</th><th>이렇게 하세요</th></tr>
     <tr><td>주제가 바뀌었다</td><td>사이드바 <b>+ 새 세션</b>으로 새로 시작. 지난 맥락이 판단을 흐리지 않게</td></tr>
-    <tr><td>60분 넘게 쉬었다가 다시 할 때</td><td><b>새 세션</b>으로 시작. 캐시가 사라진 뒤라 지난 세션에 이어 보내면 앞 대화 전체를 다시 읽느라 토큰을 많이 씀</td></tr>
+    <tr><td>60분 넘게 쉬었다가 다시 할 때</td><td><b>새 세션</b>으로 시작. 캐시가 사라지고 유휴 상태로 넘어간 뒤라, 지난 세션에 이어 보내면 앞 대화 전체를 다시 읽느라 토큰을 많이 쓰거나 요약본으로 이어가 세부 내용이 빠질 수 있음</td></tr>
     <tr><td>어제 하던 일을 이어서</td><td>이때도 <b>새 세션</b>으로 시작하고, 필요한 내용은 CLAUDE.md나 정리 파일에서 읽게 하기. 지난 세션은 무엇을 했는지 확인하는 용도로만 열어보기</td></tr>
     <tr><td>여러 일을 동시에</td><td>세션을 여러 개 열어 각각 다른 폴더·다른 일을 맡기기</td></tr>
     <tr><td>대화가 길어져 느려졌다</td><td><code>/compact</code>로 요약하고 이어가기</td></tr>
@@ -732,11 +735,13 @@ pre { margin: 0; padding: 12px 16px 16px; overflow-x: auto; white-space: pre-wra
 
   <h3 id="p4-artifact">아티팩트: 문서·슬라이드·디자인 만들기</h3>
   <p>사이드바의 <b>아티팩트</b>에서는 바로 쓸 수 있는 결과물을 만들 수 있어요. 유형을 고르고 만들 내용을 말하면, Claude가 화면에서 실시간으로 채워 갑니다. 만든 결과물은 처음에는 <b>나만 볼 수 있는 비공개 페이지</b>이고, 필요하면 링크로 공유해요.</p>
-  <div class="grid-4">
+  <div class="grid-3">
     <div class="box"><div class="k">DOCUMENT</div><h4>문서</h4><p>안내문, 기획서, 회의록. 글꼴·크기·색을 화면에서 바로 조정</p></div>
     <div class="box"><div class="k">SLIDES</div><h4>슬라이드</h4><p>발표 자료. 글보다 시각 자료 중심으로 구성하고 PPTX·PDF로 내려받기</p></div>
     <div class="box hl"><div class="k">DESIGN</div><h4>디자인</h4><p>카드뉴스, 배너, 화면 시안 같은 시각 디자인</p></div>
-    <div class="box"><div class="k">DASHBOARD</div><h4>대시보드</h4><p>숫자 데이터를 표·차트로 한 화면에 정리</p></div>
+    <div class="box"><div class="k">WHITEBOARD · 베타</div><h4>화이트보드</h4><p>아이디어를 붙이고 옮기는 공유 캔버스. 브레인스토밍, 무드보드, 회의 내용 정리</p></div>
+    <div class="box"><div class="k">SHEETS · 베타</div><h4>시트</h4><p>수식과 여러 탭을 쓰는 표. 작업 트래커, 납품 목록, 일정표</p></div>
+    <div class="box"><div class="k">DATA</div><h4>데이터</h4><p>숫자 데이터를 표·차트·대시보드로 정리하고 흐름을 설명 (예전 이름: 대시보드)</p></div>
   </div>
   <div class="prompt"><div class="prompt-head">✍️ 요청 예시 (디자인)</div><pre>인스타그램에 올릴 카드뉴스 8장을 만들어줘.
 주제는 '가을 신제품 출시 안내'이고, 보는 사람은 20~30대 직장인이야.
@@ -929,8 +934,33 @@ outputs/     결과물 저장 위치
     <tr><td class="nowrap">03 권한 확인</td><td>읽기·쓰기·전송 범위 확인</td><td>읽기만 필요한데 전송 권한까지 주는 건 아닌지</td></tr>
     <tr><td class="nowrap">04 사용 확인</td><td>실행 전 필요하면 다시 확인</td><td>전송·생성 직전에 사람이 한 번 더 보는지</td></tr>
   </table></div>
-  <p><b>커넥터 화면 찾기:</b> 사이드바 <b>사용자 지정 &gt; 커넥터</b>에서 연결 상태를 보고, 연결을 끊거나 다시 연결해요. 대화 중에는 입력창 <b>+ 버튼 &gt; 커넥터 &gt; 커넥터 관리</b>로 바로 들어갈 수 있어요. 새 도구는 커넥터 화면에서 커넥터 디렉터리를 열어 찾습니다.</p>
+  <p><b>커넥터 화면 찾기:</b> 사이드바 <b>사용자 지정 &gt; 커넥터</b>에서 연결 상태를 보고, 연결을 끊거나 다시 연결해요. 대화 중에는 입력창 <b>+ 버튼 &gt; 커넥터 &gt; 커넥터 관리</b>로 바로 들어갈 수 있어요. 새 도구를 추가하는 방법은 바로 아래에서 봅니다.</p>
   <div class="note tip"><span class="note-k">💡 TIP</span><div>커넥터는 많이 붙일수록 좋은 게 아니에요. 쓰는 것만 연결하고, 안 쓰는 건 끊어두는 편이 안전합니다.</div></div>
+
+  <h3 id="p6-add">커넥터를 추가하는 두 가지 방법</h3>
+  <div class="grid-2">
+    <div class="box hl"><div class="k">방법 1</div><h4>탐색에서 추가</h4><p>Claude에 등록된 목록에서 골라요. 주소를 몰라도 되는 가장 쉬운 방법이에요.</p>
+      <ol>
+        <li><b>설정 &gt; 커넥터 &gt; 탐색</b> 탭 열기</li>
+        <li>서비스 이름 검색 후 <b>+ 버튼</b></li>
+        <li>서비스 로그인 창에서 로그인하고 권한 승인</li>
+        <li>내 항목에 추가됐는지 확인</li>
+      </ol>
+      <p class="ex">이름 옆 <b>체크 표시</b>는 Anthropic이 검토한 인증 커넥터, <b>커뮤니티</b> 라벨은 자동 검사만 통과한 항목이에요. 비슷한 이름이 여럿이면 제작자를 확인하고 추가합니다.</p>
+    </div>
+    <div class="box"><div class="k">방법 2</div><h4>사용자 지정으로 직접 추가</h4><p>목록에 없거나 공식 주소로 바로 연결할 때, 서비스의 <b>MCP 서버 주소(URL)</b>를 직접 넣어요.</p>
+      <ol>
+        <li>서비스 공식 홈페이지·도움말에서 MCP 주소 확인</li>
+        <li><b>설정 &gt; 커넥터 &gt; 추가 &gt; 사용자 지정 커넥터 추가</b></li>
+        <li>이름과 서버 URL 입력 후 추가</li>
+        <li>로그인·권한 승인 후 <b>사용자 지정</b> 라벨이 보이면 완료</li>
+      </ol>
+      <p class="ex">예) Higgsfield: <code>https://mcp.higgsfield.ai/mcp</code></p>
+    </div>
+  </div>
+  <div class="note key"><span class="note-k">📌 핵심</span><div>두 방법은 같은 MCP 방식으로 동작해요. 다른 점은 <b>Anthropic 검토 여부</b>와 목록 노출뿐이고, 연결한 뒤 쓰는 법은 똑같습니다.</div></div>
+  <div class="note warn"><span class="note-k">⚠️ 주의</span><div>사용자 지정 커넥터는 Anthropic이 검토하지 않아요. 주소는 <b>서비스 공식 페이지에서 확인한 것만</b> 쓰고(블로그·SNS 주소는 다를 수 있어요), 어떤 데이터에 접근하는지 보고 연결합니다. 회사 계정(팀·엔터프라이즈)은 관리자가 허용해야 추가할 수 있어요.</div></div>
+  <div class="note tip"><span class="note-k">💡 TIP</span><div>연결했는데 Claude가 못 쓴다면, 입력창 <b>+ 버튼 &gt; 커넥터</b>에서 이번 대화에 켜져 있는지 확인하세요.</div></div>
 
   <h3 id="p6-main">대표 커넥터와 쓰는 기준</h3>
   <div class="table-wrap"><table>
@@ -963,7 +993,6 @@ outputs/     결과물 저장 위치
     <div class="box hl"><h4>연결은 한 번이면 돼요</h4><p>같은 계정으로 로그인했다면 웹이나 Desktop 설정에서 연결한 커넥터를 <b>Code 탭에서도 그대로</b> 쓸 수 있어요. 따로 다시 연결하지 않아도 됩니다.</p></div>
     <div class="box"><h4>추가와 확인은 메뉴에서</h4><p>Code 탭 입력창의 <b>+ 버튼 &gt; 커넥터 추가</b>로 바로 붙이고, 연결 상태는 사이드바 <b>사용자 지정 &gt; 커넥터</b>에서 확인해요.</p></div>
   </div>
-  <div class="note warn"><span class="note-k">⚠️ 주의</span><div>디렉터리에 없는 MCP 서버를 직접 추가할 수도 있지만, 출처를 모르는 서버는 연결하지 않습니다. 회사 계정은 관리자 설정에 따라 추가가 막혀 있을 수 있어요.</div></div>
 </section>
 
 <!-- ================= PART 06 ================= -->
@@ -1146,9 +1175,9 @@ report-writing/
       <h4>세션 · 토큰</h4>
       <ul>
         <li><b>주제가 바뀌면</b>: + 새 세션</li>
-        <li><b>60분 넘게 쉬었다면</b>: 캐시가 사라졌으니 새 세션</li>
+        <li><b>60분 넘게 쉬었다면</b>: 캐시가 사라지고 유휴 상태(요약본으로 이어감)라 새 세션</li>
         <li><b>모델</b>: 대화 시작할 때 정하기</li>
-        <li><b>Fable</b>: 별도 요금, 꼭 필요할 때만</li>
+        <li><b>Fable</b>: Ultra 외에는 쓴 만큼 요금, 꼭 필요할 때만</li>
         <li><b>이어갈 기준</b>: CLAUDE.md · 정리 파일에</li>
       </ul>
     </div>
@@ -1184,6 +1213,7 @@ report-writing/
     <tr><td>토큰</td><td>AI가 글을 처리하는 단위. 사용량 계산 기준</td></tr>
     <tr><td>컨텍스트</td><td>AI가 지금 대화에서 참고하는 정보 전체</td></tr>
     <tr><td>프롬프트 캐싱</td><td>앞 대화를 읽고 계산한 결과를 서버에 잠시 보관해 토큰을 아끼는 기능(보관된 결과는 캐시). 기억이 아니라 속도·비용만 달라짐. 마지막 메시지 후 60분 동안 쉬면 사라짐</td></tr>
+    <tr><td>유휴 상태 요약</td><td>캐시가 사라진 긴 대화를 쉬는 동안 자동으로 요약해 두고, 다시 시작할 때 그 요약본으로 이어가는 기능. 토큰은 덜 쓰지만 세부 내용이 빠질 수 있음</td></tr>
     <tr><td>작업 폴더</td><td>Code 탭이 읽고 쓰는 범위</td></tr>
     <tr><td>권한 모드</td><td>어떤 행동을 묻지 않고 할지 정하는 설정</td></tr>
     <tr><td>계획 모드</td><td>읽고 계획만 세우고, 승인 후 실행하는 모드</td></tr>
